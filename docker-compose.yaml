@@ -1,0 +1,17 @@
+version: "3.7"
+
+services:
+  dastar-db:
+    container_name: dastar-db
+    image: mysql:8.0
+    ports:
+      - "3306:3306"
+    environment:
+      - MYSQL_DATABASE=dastar
+      - MYSQL_ROOT_PASSWORD=root-pass
+      - MYSQL_USER=danawa
+      - MYSQL_PASSWORD=danawa-pass
+      - TZ=Aisa/Seoul
+    command:
+      - --character-set-server=utf8mb4
+      - --collation-server=utf8mb4_unicode_ci
