@@ -29,7 +29,7 @@ class UserTest : DescribeSpec({
         }
 
         context("이메일이 30자리를 초과했을 때") {
-            it("IllegalArgumentException을 던진다.") {
+            it("IllegalStateException을 던진다.") {
                 val exception = shouldThrow<IllegalStateException> {
                     User.create("a".repeat(31), "testpassword", "홍길동")
                 }
@@ -38,7 +38,7 @@ class UserTest : DescribeSpec({
         }
 
         context("이메일 형식이 올바르지 않았을 때") {
-            it("IllegalArgumentException을 던진다.") {
+            it("IllegalStateException을 던진다.") {
                 val exception = shouldThrow<IllegalStateException> {
                     User.create("testemail.com", "testpassword", "홍길동")
                 }
@@ -56,7 +56,7 @@ class UserTest : DescribeSpec({
         }
 
         context("비밀번호가 8자리 미만일 때") {
-            it("IllegalArgumentException을 던진다.") {
+            it("IllegalStateException을 던진다.") {
                 val exception = shouldThrow<IllegalStateException> {
                     User.create("test@email.com", "test", "홍길동")
                 }
@@ -65,11 +65,20 @@ class UserTest : DescribeSpec({
         }
 
         context("비밀번호가 15자리를 초과했을 때") {
-            it("IllegalArgumentException을 던진다.") {
+            it("IllegalStateException을 던진다.") {
                 val exception = shouldThrow<IllegalStateException> {
                     User.create("test@email.com", "a".repeat(16), "홍길동")
                 }
                 exception.message shouldBe "비밀번호는 8~15자리여야 합니다."
+            }
+        }
+
+        context("비밀번호 사용 불가 특수문자가 있을 때") {
+            it("IllegalStateException을 던진다.") {
+                val exception = shouldThrow<IllegalStateException> {
+                    User.create("test@email.com", "testpassword++", "홍길동")
+                }
+                exception.message shouldBe "비밀번호는 영문 대소문자, 숫자, 특수문자(!@#\$%^&*()?_~)로만 구성되어야 합니다."
             }
         }
 
@@ -83,7 +92,7 @@ class UserTest : DescribeSpec({
         }
 
         context("닉네임이 2자리 미만일 때") {
-            it("IllegalArgumentException을 던진다.") {
+            it("IllegalStateException을 던진다.") {
                 val exception = shouldThrow<IllegalStateException> {
                     User.create("test@email.com", "testpassword", "홍")
                 }
@@ -92,7 +101,7 @@ class UserTest : DescribeSpec({
         }
 
         context("닉네임이 10자리를 초과했을 때") {
-            it("IllegalArgumentException을 던진다.") {
+            it("IllegalStateException을 던진다.") {
                 val exception = shouldThrow<IllegalStateException> {
                     User.create("test@email.com", "testpassword", "a".repeat(11))
                 }
@@ -101,7 +110,7 @@ class UserTest : DescribeSpec({
         }
 
         context("닉네임에 특수문자가 포함되었을 때") {
-            it("IllegalArgumentException을 던진다.") {
+            it("IllegalStateException을 던진다.") {
                 val exception = shouldThrow<IllegalStateException> {
                     User.create("test@email.com", "testpassword", "홍길동!")
                 }
