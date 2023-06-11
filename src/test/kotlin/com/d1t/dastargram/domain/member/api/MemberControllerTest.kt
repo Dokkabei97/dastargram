@@ -5,6 +5,7 @@ import com.d1t.dastargram.domain.member.TestMemberArgument.Companion.TEST_NAME
 import com.d1t.dastargram.domain.member.TestMemberArgument.Companion.TEST_NICKNAME
 import com.d1t.dastargram.domain.member.TestMemberArgument.Companion.TEST_PASSWORD
 import com.d1t.dastargram.domain.member.application.MemberFacade
+import com.d1t.dastargram.domain.member.domain.Member
 import com.d1t.dastargram.domain.member.dto.MemberRequest.*
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import io.kotest.core.spec.style.AnnotationSpec
@@ -25,6 +26,7 @@ import org.springframework.web.context.WebApplicationContext
 @WebMvcTest(MemberController::class)
 @Import(HttpEncodingAutoConfiguration::class)
 class MemberControllerTest : AnnotationSpec() {
+    private val member = mockk<Member>()
     private val memberFacade = mockk<MemberFacade>()
     private val mockMvc: MockMvc = MockMvcBuilders.standaloneSetup(MemberController(memberFacade)).build()
 
@@ -37,7 +39,7 @@ class MemberControllerTest : AnnotationSpec() {
                 TEST_NAME
         )
 
-        every { memberFacade.signUp(signUpMemberRequest) } just Runs
+        every { memberFacade.signUp(signUpMemberRequest) } returns member
 
         mockMvc.perform(post("/api/v1/members")
                 .contentType(MediaType.APPLICATION_JSON)
