@@ -1,14 +1,14 @@
-package com.d1t.dastargram.domain.user.domain
+package com.d1t.dastargram.domain.member.domain
 
 import com.d1t.dastargram.global.common.AbstractEntity
 import jakarta.persistence.*
 
 @Entity
-@Table(name = "users")
-class User(
+@Table(name = "members")
+class Member(
         @Id
         @GeneratedValue(strategy = GenerationType.IDENTITY)
-        @Column(name = "user_id")
+        @Column(name = "member_id")
         val id: Long?,
 
         @Column(name = "email")
@@ -40,12 +40,12 @@ class User(
         private const val NICKNAME_REGEX = "^[가-힣a-zA-Z0-9]{2,10}$"
         private const val NAME_REGEX = "^[가-힣a-zA-Z]{2,10}$"
 
-        fun create(email: String, password: String, nickname: String, name: String): User {
+        fun create(email: String, password: String, nickname: String, name: String): Member {
             validateEmail(email)
             validatePassword(password)
             validateNickname(nickname)
             validateName(name)
-            return User(null, email, password, nickname, name, null)
+            return Member(null, email, password, nickname, name, null)
         }
 
         private fun validateEmail(email: String) {
