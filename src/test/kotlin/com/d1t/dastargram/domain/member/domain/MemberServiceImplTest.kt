@@ -23,14 +23,14 @@ class MemberServiceImplTest : BehaviorSpec({
                 TEST_NAME
         )
         `when`("회원가입을 한다") {
-            every { memberReader.validateExistsByEmail(any()) } just Runs
-            every { memberReader.validateExistsByNickname(any()) } just Runs
+            every { memberReader.isExistsByEmail(any()) } returns false
+            every { memberReader.isExistsByNickname(any()) } returns false
             every { memberStore.create(any()) } just Runs
 
             memberService.signUp(request)
             then("회원가입이 완료된다") {
-                verify { memberReader.validateExistsByEmail(any()) }
-                verify { memberReader.validateExistsByNickname(any()) }
+                verify { memberReader.isExistsByEmail(any()) }
+                verify { memberReader.isExistsByNickname(any()) }
                 verify { memberStore.create(any()) }
             }
         }
