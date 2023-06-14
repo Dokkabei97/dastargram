@@ -70,7 +70,5 @@ jobs:
           build-args: VERSION=${{ steps.get_version.outputs.VERSION }}
           push: ${{ github.event_name != 'pull_request' }}
           tags: |
-            dastargram:latest
-            dastargram:${{ steps.get_version.outputs.VERSION }}
-            ${{ env.CONTAINER_REGISTRY }}/dastargram:latest
-            ${{ env.CONTAINER_REGISTRY }}/dastargram:${{ steps.get_version.outputs.VERSION }}
+            ${{ env.CONTAINER_REGISTRY }}/${{ github.repository_owner }}/dastargram:latest
+            ${{ env.CONTAINER_REGISTRY }}/${{ github.repository_owner }}/dastargram:${{ steps.get_version.outputs.VERSION }}
