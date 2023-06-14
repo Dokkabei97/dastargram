@@ -47,6 +47,11 @@ jobs:
           VERSION=$(${{ env.HOME }}/shell/extract_version.sh ${{ env.HOME }})
           echo "VERSION=$VERSION" >> "$GITHUB_OUTPUT"
 
+      - name: GitHub Owner set lowercase
+        id: github_owner_lowercase
+        run: |
+          echo "GITHUB_OWNER=$(echo ${{ github.repository_owner }} | tr '[:upper:]' '[:lower:]')" >> "$GITHUB_OUTPUT"
+
       # 도커 세팅
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v2
@@ -70,5 +75,5 @@ jobs:
           build-args: VERSION=${{ steps.get_version.outputs.VERSION }}
           push: ${{ github.event_name != 'pull_request' }}
           tags: |
-            ${{ env.CONTAINER_REGISTRY }}/${{ github.repository_owner }}/dastargram:latest
-            ${{ env.CONTAINER_REGISTRY }}/${{ github.repository_owner }}/dastargram:${{ steps.get_version.outputs.VERSION }}
+            ${{ env.CONTAINER_REGISTRY }}/${{ steps.github_owner_lowercase.outputs.GITHUB_OWNER }}/dastargram:latest
+            ${{ env.CONTAINER_REGISTRY }}/${{ steps.github_owner_lowercase.outputs.GITHUB_OWNER }}/dastargram:${{ steps.get_version.outputs.VERSION }}
