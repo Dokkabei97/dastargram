@@ -13,6 +13,7 @@ on:
 # 환경변수
 env:
   CONTAINER_REGISTRY: ghcr.io
+  HOME: /home/runner/work/dastargram/dastargram
 
 jobs:
   deploy:
@@ -48,8 +49,8 @@ jobs:
       - name: Extract version
         id: get_version
         run: |
-          chmod +x /home/runner/work/dastargram/dastargram/shell/extract_version.sh
-          VERSION=$(/home/runner/work/dastargram/dastargram/shell/extract_version.sh)
+          chmod +x ${{ env.HOME }}/shell/extract_version.sh
+          VERSION=$(${{ env.HOME }}/shell/extract_version.sh ${{ env.HOME }})
           echo "VERSION=$VERSION}" >> "$GITHUB_OUTPUT"
 
       # 도커 세팅
@@ -76,4 +77,4 @@ jobs:
           push: ${{ github.event_name != 'pull_request' }}
           tags: |
             ${{ env.CONTAINER_REGISTRY }}/dastargram:latest
-            ${{ env.CONTAINER_REGISTRY }}/dastargram:${{ steps.get_version.outputs.VERSION }}
+            ${{ env.CONTAINER_REGISTRY }}/dastargram:${ steps.get_version.outputs.VERSION }
