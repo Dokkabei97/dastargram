@@ -1,4 +1,4 @@
-FROM openjdk:17-alpine
+FROM openjdk:17
 
 LABEL MAINTAINER="wkdrn970@naver.com"
 
