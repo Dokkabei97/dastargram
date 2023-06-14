@@ -1,0 +1,79 @@
+name: deploy
+
+# tag가 push 또는 master 브랜치로 pull request가 opened 될 때만 실행
+on:
+  push:
+    tags:
+      - '*'
+  pull_request:
+    branches: [ master ]
+    types: [ opened ]
+
+# 환경변수
+env:
+  CONTAINER_REGISTRY: ghcr.io
+  HOME: /home/runner/work/dastargram/dastargram
+
+jobs:
+  deploy:
+    # ubuntu-latest 환경에서 실행
+    runs-on: ubuntu-latest
+    steps:
+      # checkout action을 통해 소스코드를 가져옴
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      # java 17을 설치
+      - name: install java17
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+
+      # gradle 권한 부여
+      - name: Grant execute permission for gradlew
+        run: chmod +x gradlew
+
+      # gradle 빌드
+      - name: Build
+        run: ./gradlew build
+
+      # extract_version.sh 실행하여 jar파일 버전 추출
+      - name: Extract version
+        id: get_version
+        run: |
+          chmod +x ${{ env.HOME }}/shell/extract_version.sh
+          VERSION=$(${{ env.HOME }}/shell/extract_version.sh ${{ env.HOME }})
+          echo "VERSION=$VERSION" >> "$GITHUB_OUTPUT"
+
+      # docker repository에 image를 push할 때 소문자만 허용해서 github owner를 소문자로 변경
+      - name: GitHub Owner set lowercase
+        id: github_owner_lowercase
+        run: |
+          echo "GITHUB_OWNER=$(echo ${{ github.repository_owner }} | tr '[:upper:]' '[:lower:]')" >> "$GITHUB_OUTPUT"
+
+      # 도커 세팅
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v2
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v2
+
+      # pull request가 아닐 때만 ghcr.io 로그인
+      - name: Login to GHCR
+        uses: docker/login-action@v2
+        with:
+          registry: ${{ env.CONTAINER_REGISTRY }}
+          username: ${{ github.repository_owner }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+      # pull request가 아닐 때만 도커 빌드 및 푸시
+      - name: Build and push
+        uses: docker/build-push-action@v4
+        with:
+          context: .
+          build-args: VERSION=${{ steps.get_version.outputs.VERSION }}
+          push: ${{ github.event_name != 'pull_request' }}
+          tags: |
+            ${{ env.CONTAINER_REGISTRY }}/${{ steps.github_owner_lowercase.outputs.GITHUB_OWNER }}/dastargram:latest
+            ${{ env.CONTAINER_REGISTRY }}/${{ steps.github_owner_lowercase.outputs.GITHUB_OWNER }}/dastargram:${{ steps.get_version.outputs.VERSION }}
