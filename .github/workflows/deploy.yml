@@ -37,6 +37,9 @@ jobs:
       - name: Build
         run: ./gradlew build
 
+      - name: Check Location
+        run: pwd
+
       # extract_version.sh 실행하여 jar파일 버전 추출
       - name: Extract version
         id: get_version
