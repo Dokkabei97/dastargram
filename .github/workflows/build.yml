@@ -1,10 +1,10 @@
 name: build
 
-# develop 브랜치로 pull request가 opened, synchronize, reopened 될 때만 실행
+# develop 브랜치로 pull request가 opened 될 때만 실행
 on:
   pull_request:
     branches: [ develop ]
-    types: [ opened, synchronize, reopened ]
+    types: [ opened ]
     paths-ignore:
       - '**.md'
 
