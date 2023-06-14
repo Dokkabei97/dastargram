@@ -3,12 +3,11 @@ name: deploy
 # tag가 push 또는 master 브랜치로 pull request가 opened 될 때만 실행
 on:
   push:
-    branches: [ feature/cicd ]
-#    tags:
-#      - '*'
-#  pull_request:
-#    branches: [ test ]
-#    types: [ opened ]
+    tags:
+      - '*'
+  pull_request:
+    branches: [ master ]
+    types: [ opened ]
 
 # 환경변수
 env:
@@ -47,6 +46,7 @@ jobs:
           VERSION=$(${{ env.HOME }}/shell/extract_version.sh ${{ env.HOME }})
           echo "VERSION=$VERSION" >> "$GITHUB_OUTPUT"
 
+      # docker repository에 image를 push할 때 소문자만 허용해서 github owner를 소문자로 변경
       - name: GitHub Owner set lowercase
         id: github_owner_lowercase
         run: |
