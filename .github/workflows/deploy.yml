@@ -51,7 +51,7 @@ jobs:
         run: |
           chmod +x ${{ env.HOME }}/shell/extract_version.sh
           VERSION=$(${{ env.HOME }}/shell/extract_version.sh ${{ env.HOME }})
-          echo "VERSION=$VERSION}" >> "$GITHUB_OUTPUT"
+          echo "VERSION=$VERSION" >> "$GITHUB_OUTPUT"
 
       # 도커 세팅
       - name: Set up QEMU
