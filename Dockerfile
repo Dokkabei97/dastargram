@@ -4,8 +4,6 @@ LABEL MAINTAINER="wkdrn970@naver.com"
 
 ARG VERSION
 
-RUN apt-get update
-
 WORKDIR /home/d1t/app
 
 COPY build/libs/dastargram-${VERSION}.jar app.jar
