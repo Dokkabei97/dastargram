@@ -77,4 +77,4 @@ jobs:
           push: ${{ github.event_name != 'pull_request' }}
           tags: |
             ${{ env.CONTAINER_REGISTRY }}/dastargram:latest
-            ${{ env.CONTAINER_REGISTRY }}/dastargram:${ steps.get_version.outputs.VERSION }
+            ${{ env.CONTAINER_REGISTRY }}/dastargram:${{ steps.get_version.outputs.VERSION }}
