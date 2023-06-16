@@ -46,7 +46,7 @@ class PostTest : DescribeSpec({
 
         context("사진을 10개 이상 업로드했을때") {
             it("IllegalArgumentException 던진다.") {
-                val postImages = ArrayList<String>()
+                val postImages: MutableList<String> = mutableListOf()
                 for(i in 1..11)
                     postImages.add("https://www.test.com/")
 
