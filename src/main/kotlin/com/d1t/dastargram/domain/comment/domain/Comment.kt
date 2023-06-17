@@ -38,7 +38,7 @@ class Comment(
 //    @Column(name = "post_id")
 //    var post: Post?
 
-    @Column(name = "comment_like_count")
+    @Column(name = "comment_like_count", columnDefinition = "int default 0")
     var likeCount: Int = 0
 
 ) : AbstractEntity() {
