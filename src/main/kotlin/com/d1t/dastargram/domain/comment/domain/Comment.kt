@@ -25,7 +25,7 @@ class Comment(
     val id: Long?,
 
     // 댓글 내용
-    @Column(name = "comment_content", columnDefinition = "text")
+    @Column(name = "comment_content")
     var content: String,
 
     // 댓글 생성한 member
