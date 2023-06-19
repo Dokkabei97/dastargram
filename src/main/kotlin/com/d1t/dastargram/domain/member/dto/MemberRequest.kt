@@ -12,19 +12,19 @@ sealed class MemberRequest(
         @field: NotBlank(message = "비밀번호는 필수입니다.")
         open val password: String,
 
-        @field: NotBlank(message = "이름은 필수입니다.")
-        open val name: String,
-
         @field: NotBlank(message = "닉네임은 필수입니다.")
         open val nickname: String,
+
+        @field: NotBlank(message = "이름은 필수입니다.")
+        open val name: String,
 ) {
 
     data class SignUpMemberRequest(
             override val email: String,
             override val password: String,
-            override val name: String,
             override val nickname: String,
-    ) : MemberRequest(email, password, name, nickname)
+            override val name: String,
+    ) : MemberRequest(email, password, nickname, name)
 
     data class UpdateMemberRequest(
             val memberId: Long,

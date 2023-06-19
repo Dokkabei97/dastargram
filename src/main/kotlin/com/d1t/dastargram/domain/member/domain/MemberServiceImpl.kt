@@ -2,6 +2,8 @@ package com.d1t.dastargram.domain.member.domain
 
 import com.d1t.dastargram.domain.member.dto.MemberRequest.SignUpMemberRequest
 import com.d1t.dastargram.domain.member.dto.MemberRequest.UpdateMemberRequest
+import com.d1t.dastargram.domain.member.dto.MemberResponse
+import com.d1t.dastargram.domain.member.dto.MemberResponse.*
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 
@@ -10,11 +12,11 @@ import org.springframework.transaction.annotation.Transactional
 class MemberServiceImpl(val memberStore: MemberStore, val memberReader: MemberReader) : MemberService {
 
     @Transactional
-    override fun signUp(signUpMemberRequest: SignUpMemberRequest): Member {
+    override fun signUp(signUpMemberRequest: SignUpMemberRequest): MemberPublicResponse {
         validateExistsEmail(signUpMemberRequest.email)
         validateExistsNickname(signUpMemberRequest.nickname)
 
-        return memberStore.create(
+        val member = memberStore.create(
                 Member.create(
                         signUpMemberRequest.email,
                         signUpMemberRequest.password,
@@ -22,23 +24,37 @@ class MemberServiceImpl(val memberStore: MemberStore, val memberReader: MemberRe
                         signUpMemberRequest.name
                 )
         )
+
+        return MemberPublicResponse(
+                member.nickname,
+                member.name,
+                member.profileImage,
+                member.followerCount,
+                member.followingCount
+        )
     }
 
     @Transactional
-    override fun update(updateMemberRequest: UpdateMemberRequest): Member {
+    override fun update(updateMemberRequest: UpdateMemberRequest): MemberPublicResponse {
         val member = memberReader.findById(updateMemberRequest.memberId)
 
         member.apply {
-            updateMemberRequest.password?.let { password = it }
+            updateMemberRequest.password?.let { updatePassword(it) }
             updateMemberRequest.nickname?.let {
                 validateExistsNickname(it)
-                nickname = it
+                updateNickname(it)
             }
-            updateMemberRequest.name?.let { name = it }
-            updateMemberRequest.profileImage?.let { profileImage = it }
+            updateMemberRequest.name?.let { updateName(it) }
+            updateMemberRequest.profileImage?.let { updateProfileImage(it) }
         }
 
-        return member
+        return MemberPublicResponse(
+                member.nickname,
+                member.name,
+                member.profileImage,
+                member.followerCount,
+                member.followingCount
+        )
     }
 
     private fun validateExistsEmail(email: String) = require(!memberReader.isExistsByEmail(email)) { "이미 존재하는 이메일입니다." }
