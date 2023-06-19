@@ -1,7 +1,7 @@
 package com.d1t.dastargram.domain.comment.domain
 
 import com.d1t.dastargram.domain.member.domain.Member
-import com.d1t.dastargram.global.common.AbstractEntity
+import com.d1t.dastargram.global.common.entity.AbstractEntity
 import jakarta.persistence.Column
 import jakarta.persistence.Entity
 import jakarta.persistence.FetchType

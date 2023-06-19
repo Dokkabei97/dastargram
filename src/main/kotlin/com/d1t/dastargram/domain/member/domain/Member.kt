@@ -1,6 +1,6 @@
 package com.d1t.dastargram.domain.member.domain
 
-import com.d1t.dastargram.global.common.AbstractEntity
+import com.d1t.dastargram.global.common.entity.AbstractEntity
 import jakarta.persistence.*
 
 @Entity
