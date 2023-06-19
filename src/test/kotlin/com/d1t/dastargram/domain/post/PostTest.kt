@@ -51,7 +51,7 @@ class PostTest : DescribeSpec({
                     postImages.add("https://www.test.com/")
 
                 val exception = shouldThrow<IllegalArgumentException> {
-                    Post.create(member, "test", emptyList());
+                    Post.create(member, "test", postImages);
                 }
                 exception.message shouldBe "사진은 1개 이상 10개 이하 등록해야합니다."
             }
