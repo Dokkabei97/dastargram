@@ -18,15 +18,14 @@ class Post(
         @JoinColumn(name = "member_id")
         var member: Member,
 
-        @Lob
-        @Column(name = "post_content")
+        @Column(name="post_content", columnDefinition = "text")
         var content: String? = null,
 
         @Column(name = "like_count")
         var likeCount: Int = 0,
 
         @Type(JsonType::class)
-        @Column(name = "postImages", columnDefinition = "json")
+        @Column(name = "post_images", columnDefinition = "json")
         var postImages: List<String>,
 
         ) : AbstractEntity() {
