@@ -64,6 +64,9 @@ dependencies {
 
     // mockk 라이브러리 (코틀린 모킹 라이브러리)
     testImplementation("io.mockk:mockk:1.13.2")
+
+    //JPA 에서 JSON 컬럼 타입을 사용하기 위한 라이브러리
+    implementation("com.vladmihalcea:hibernate-types-60:2.20.0")
 }
 
 tasks.withType<KotlinCompile> {
