@@ -5,12 +5,13 @@ import com.d1t.dastargram.domain.member.TestMemberArgument.Companion.TEST_NAME
 import com.d1t.dastargram.domain.member.TestMemberArgument.Companion.TEST_NICKNAME
 import com.d1t.dastargram.domain.member.TestMemberArgument.Companion.TEST_PASSWORD
 import com.d1t.dastargram.domain.member.dto.MemberRequest
+import com.d1t.dastargram.domain.member.dto.MemberResponse
 import io.kotest.core.spec.style.BehaviorSpec
 import io.mockk.*
 
 class MemberServiceImplTest : BehaviorSpec({
     val member = mockk<Member>()
-
+    val memberResponse = mockk<MemberResponse.MemberPublicResponse>()
     val memberReader = mockk<MemberReader>()
     val memberStore = mockk<MemberStore>()
 
