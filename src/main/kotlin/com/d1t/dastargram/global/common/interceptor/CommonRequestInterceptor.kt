@@ -11,8 +11,8 @@ import java.util.*
 class CommonRequestInterceptor: HandlerInterceptor {
 
     override fun preHandle(request: HttpServletRequest, response: HttpServletResponse, handler: Any): Boolean {
-        var requestEventId = request.getHeader(HEADER_REQUEST_UUID_KEY)
-        requestEventId.ifBlank {
+        var requestEventId: String? = request.getHeader(HEADER_REQUEST_UUID_KEY)
+        if (requestEventId.isNullOrBlank()) {
             requestEventId = UUID.randomUUID().toString()
         }
         MDC.put(HEADER_REQUEST_UUID_KEY, requestEventId)
