@@ -24,8 +24,8 @@ class MemberController(val memberFacade: MemberFacade) {
         return CommonResponse.success(member, "회원가입 성공")
     }
 
-    @PutMapping("/{id}")
-    fun update(@RequestBody @Validated updateMemberRequest: UpdateMemberRequest, @PathVariable id: Long): CommonResponse<MemberPublicResponse> {
+    @PutMapping()
+    fun update(@RequestBody @Validated updateMemberRequest: UpdateMemberRequest): CommonResponse<MemberPublicResponse> {
         val member = memberFacade.update(updateMemberRequest)
         return CommonResponse.success(member, "회원정보 수정 성공")
     }
