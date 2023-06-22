@@ -4,4 +4,6 @@ interface MemberReader {
     fun isExistsByEmail(email: String): Boolean
     fun isExistsByNickname(nickname: String): Boolean
     fun findById(memberId: Long): Member
+    fun findByName(name: String): List<Member>
+    fun findByNickname(nickname: String): Member
 }
