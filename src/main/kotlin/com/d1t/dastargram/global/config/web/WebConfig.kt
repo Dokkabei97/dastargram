@@ -1,4 +1,4 @@
-package com.d1t.dastargram.global.config
+package com.d1t.dastargram.global.config.web
 
 import com.d1t.dastargram.global.common.interceptor.CommonRequestInterceptor
 import org.springframework.context.annotation.Configuration
