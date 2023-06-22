@@ -42,8 +42,8 @@ jobs:
       - name: Extract version
         id: get_version
         run: |
-          chmod +x ${{ env.HOME }}/shell/extract_version.sh
-          VERSION=$(${{ env.HOME }}/shell/extract_version.sh ${{ env.HOME }})
+          chmod +x ${{ env.HOME }}/scripts/extract_version.sh
+          VERSION=$(${{ env.HOME }}/scripts/extract_version.sh ${{ env.HOME }})
           echo "VERSION=$VERSION" >> "$GITHUB_OUTPUT"
 
       # docker repository에 image를 push할 때 소문자만 허용해서 github owner를 소문자로 변경

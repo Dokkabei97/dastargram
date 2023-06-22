@@ -2,6 +2,9 @@ package com.d1t.dastargram.domain.member.api
 
 import com.d1t.dastargram.domain.member.application.MemberFacade
 import com.d1t.dastargram.domain.member.dto.MemberRequest.*
+import com.d1t.dastargram.domain.member.dto.MemberResponse
+import com.d1t.dastargram.domain.member.dto.MemberResponse.*
+import com.d1t.dastargram.global.common.response.CommonResponse
 import org.springframework.http.ResponseEntity
 import org.springframework.validation.annotation.Validated
 import org.springframework.web.bind.annotation.PathVariable
@@ -16,15 +19,15 @@ import org.springframework.web.bind.annotation.RestController
 class MemberController(val memberFacade: MemberFacade) {
 
     @PostMapping
-    fun signUp(@RequestBody @Validated signUpMemberRequest: SignUpMemberRequest): ResponseEntity<String> {
-        memberFacade.signUp(signUpMemberRequest)
-        return ResponseEntity.ok("회원가입 성공")
+    fun signUp(@RequestBody @Validated signUpMemberRequest: SignUpMemberRequest): CommonResponse<MemberPublicResponse> {
+        val member = memberFacade.signUp(signUpMemberRequest)
+        return CommonResponse.success(member, "회원가입 성공")
     }
 
-    @PutMapping("/{id}")
-    fun update(@RequestBody @Validated updateMemberRequest: UpdateMemberRequest, @PathVariable id: Long): ResponseEntity<String> {
-        memberFacade.update(updateMemberRequest)
-        return ResponseEntity.ok("회원정보 수정 성공")
+    @PutMapping()
+    fun update(@RequestBody @Validated updateMemberRequest: UpdateMemberRequest): CommonResponse<MemberPublicResponse> {
+        val member = memberFacade.update(updateMemberRequest)
+        return CommonResponse.success(member, "회원정보 수정 성공")
     }
 
 }

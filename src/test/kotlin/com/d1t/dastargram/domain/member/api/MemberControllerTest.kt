@@ -42,9 +42,8 @@ class MemberControllerTest {
                 .content(json)
                 .characterEncoding("utf-8"))
                 .andExpect(status().isOk)
-                .andExpect(content().string("회원가입 성공"))
-                .andExpect(content().contentTypeCompatibleWith(MediaType.TEXT_PLAIN))
-                .andExpect(content().string("회원가입 성공"))
+                .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
+                .andExpect(content().string("{\"result\":\"SUCCESS\",\"data\":null,\"message\":\"회원가입 성공\",\"error\":null}"))
         // TODO 공통 Response 개발 완료 후 Controller Return 바뀌면 수정 필요
     }
 }

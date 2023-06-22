@@ -1,7 +1,7 @@
 package com.d1t.dastargram.domain.post.domain
 
 import com.d1t.dastargram.domain.member.domain.Member
-import com.d1t.dastargram.global.common.AbstractEntity
+import com.d1t.dastargram.global.common.entity.AbstractEntity
 import com.vladmihalcea.hibernate.type.json.JsonType
 import jakarta.persistence.*
 import org.hibernate.annotations.Type

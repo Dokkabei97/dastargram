@@ -1,4 +1,4 @@
-package com.d1t.dastargram.global.common
+package com.d1t.dastargram.global.common.entity
 
 import jakarta.persistence.EntityListeners
 import jakarta.persistence.MappedSuperclass

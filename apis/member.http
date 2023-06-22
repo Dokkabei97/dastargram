@@ -8,3 +8,15 @@ Content-Type: application/json
   "name": "홍길동"
 }
 
+###
+
+PUT http://localhost:8080/api/v1/members
+Content-Type: application/json
+
+{
+  "memberId": 1,
+  "nickname": "조선해적",
+  "name": "김길동",
+  "password": null,
+  "profileImage": null
+}
