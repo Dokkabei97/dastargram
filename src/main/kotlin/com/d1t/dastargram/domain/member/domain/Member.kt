@@ -32,6 +32,9 @@ class Member(
         @Column(name = "following_count")
         var followingCount: Int = 0,
 
+        @Column(name = "post_count")
+        var postCount: Int = 0,
+
         ) : AbstractEntity() {
 
     companion object {
@@ -79,6 +82,10 @@ class Member(
         private fun validateFollowerCount(followerCount: Int) {
             require(followerCount > 0) { "팔로워 수는 0보다 작을 수 없습니다." }
         }
+
+        private fun validatePostCount(postCount: Int) {
+            require(postCount > 0) { "게시물 수는 0보다 작을 수 없습니다." }
+        }
     }
 
     fun updatePassword(password: String) {
@@ -120,5 +127,14 @@ class Member(
     fun decreaseFollowingCount() {
         validateFollowingCount(this.followingCount)
         this.followingCount--
+    }
+
+    fun increasePostCount() {
+        this.postCount++
+    }
+
+    fun decreasePostCount() {
+        validatePostCount(this.postCount)
+        this.postCount--
     }
 }

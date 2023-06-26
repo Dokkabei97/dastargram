@@ -35,26 +35,51 @@ allOpen {
 }
 
 dependencies {
-    implementation("org.springframework.boot:spring-boot-starter-data-jpa")
-    implementation("org.springframework.boot:spring-boot-starter-validation")
-    implementation("org.springframework.boot:spring-boot-starter-web")
-
     // 코틀린 추가 구성
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
     implementation("org.jetbrains.kotlin:kotlin-reflect")
 
+    implementation("org.springframework.boot:spring-boot-starter-validation")
+    implementation("org.springframework.boot:spring-boot-starter-web")
+    testImplementation("org.springframework.boot:spring-boot-starter-test")
+
+    // oauth2 및 security 추가 구성
+    implementation("org.springframework.boot:spring-boot-starter-oauth2-client")
+    implementation("org.springframework.boot:spring-boot-starter-security")
+    testImplementation("org.springframework.security:spring-security-test")
+
+    // jpa
+    implementation("org.springframework.boot:spring-boot-starter-data-jpa")
     // querydsl 추가 구성 Spring 3.0 부터 javax에서 jakarta로 변경되어 querydsl 아래와 같이 설정 필요
     implementation("com.querydsl:querydsl-core:5.0.0")
     implementation("com.querydsl:querydsl-jpa:5.0.0:jakarta")
     kapt("com.querydsl:querydsl-apt:5.0.0:jakarta")
 
+    // JPA 에서 JSON 컬럼 타입을 사용하기 위한 라이브러리
+    implementation("com.vladmihalcea:hibernate-types-60:2.20.0")
+
     // developmentOnly("org.springframework.boot:spring-boot-docker-compose")
     // 위 스프링 도커 컴포즈 기능은 좀더 테스트 해봐야 할꺼 같음 일단 당장은 그냥 도커로 docker-compose 띄우는게 더 편함
 
+    //  elasticsearch
+    // implementation("org.springframework.boot:spring-boot-starter-data-elasticsearch")
+
+    //  redis
+    // implementation("org.springframework.boot:spring-boot-starter-data-redis")
+    // implementation("org.springframework.boot:spring-boot-starter-data-redis-reactive")
+
+    // h2
     runtimeOnly("com.h2database:h2")
+    // mysql
     runtimeOnly("com.mysql:mysql-connector-j")
+
+    // 스프링 부트 설정 프로세서
     kapt("org.springframework.boot:spring-boot-configuration-processor")
-    testImplementation("org.springframework.boot:spring-boot-starter-test")
+
+    // actuator 추가 구성 (프로메테우스, 인플럭스DB)
+    implementation("org.springframework.boot:spring-boot-starter-actuator")
+    runtimeOnly("io.micrometer:micrometer-registry-influx")
+    runtimeOnly("io.micrometer:micrometer-registry-prometheus")
 
     // kotest 라이브러리 (코틀린 테스트 라이브러리)
     implementation("io.kotest:kotest-property-jvm:5.6.1")
@@ -64,9 +89,6 @@ dependencies {
 
     // mockk 라이브러리 (코틀린 모킹 라이브러리)
     testImplementation("io.mockk:mockk:1.13.2")
-
-    //JPA 에서 JSON 컬럼 타입을 사용하기 위한 라이브러리
-    implementation("com.vladmihalcea:hibernate-types-60:2.20.0")
 }
 
 tasks.withType<KotlinCompile> {
