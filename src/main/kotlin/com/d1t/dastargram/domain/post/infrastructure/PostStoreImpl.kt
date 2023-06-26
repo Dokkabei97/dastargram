@@ -7,5 +7,5 @@ import org.springframework.stereotype.Component
 @Component
 class PostStoreImpl(val postRepository: PostRepository) : PostStore {
     override fun create(post: Post) = postRepository.save(post)
-    override fun deleteById(postId: Long) = postRepository.deleteById(postId);
+    override fun deleteById(postId: Long) = postRepository.deleteById(postId)
 }
