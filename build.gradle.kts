@@ -48,6 +48,11 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter-security")
     testImplementation("org.springframework.security:spring-security-test")
 
+    // jwt 구성
+    implementation("io.jsonwebtoken:jjwt-api:0.11.5")
+    runtimeOnly("io.jsonwebtoken:jjwt-impl:0.11.5")
+    runtimeOnly("io.jsonwebtoken:jjwt-jackson:0.11.5")
+
     // jpa
     implementation("org.springframework.boot:spring-boot-starter-data-jpa")
     // querydsl 추가 구성 Spring 3.0 부터 javax에서 jakarta로 변경되어 querydsl 아래와 같이 설정 필요
@@ -65,7 +70,7 @@ dependencies {
     // implementation("org.springframework.boot:spring-boot-starter-data-elasticsearch")
 
     //  redis
-    // implementation("org.springframework.boot:spring-boot-starter-data-redis")
+     implementation("org.springframework.boot:spring-boot-starter-data-redis")
     // implementation("org.springframework.boot:spring-boot-starter-data-redis-reactive")
 
     // h2

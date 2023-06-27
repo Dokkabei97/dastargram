@@ -2,14 +2,14 @@ package com.d1t.dastargram.domain.member.domain
 
 import com.d1t.dastargram.domain.member.dto.MemberRequest.SignUpMemberRequest
 import com.d1t.dastargram.domain.member.dto.MemberRequest.UpdateMemberRequest
-import com.d1t.dastargram.domain.member.dto.MemberResponse
 import com.d1t.dastargram.domain.member.dto.MemberResponse.*
+import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 
 @Service
 @Transactional(readOnly = true)
-class MemberServiceImpl(val memberStore: MemberStore, val memberReader: MemberReader) : MemberService {
+class MemberServiceImpl(val memberStore: MemberStore, val memberReader: MemberReader, private val passwordEncoder: PasswordEncoder) : MemberService {
 
     @Transactional
     override fun signUp(signUpMemberRequest: SignUpMemberRequest): MemberPublicResponse {
@@ -19,7 +19,7 @@ class MemberServiceImpl(val memberStore: MemberStore, val memberReader: MemberRe
         val member = memberStore.create(
                 Member.create(
                         signUpMemberRequest.email,
-                        signUpMemberRequest.password,
+                        passwordEncoder.encode(signUpMemberRequest.password),
                         signUpMemberRequest.nickname,
                         signUpMemberRequest.name
                 )
@@ -39,7 +39,9 @@ class MemberServiceImpl(val memberStore: MemberStore, val memberReader: MemberRe
         val member = memberReader.findById(updateMemberRequest.memberId)
 
         member.apply {
-            updateMemberRequest.password?.let { updatePassword(it) }
+            updateMemberRequest.password?.let {
+                updatePassword(passwordEncoder.encode(it))
+            }
             updateMemberRequest.nickname?.let {
                 validateExistsNickname(it)
                 updateNickname(it)
