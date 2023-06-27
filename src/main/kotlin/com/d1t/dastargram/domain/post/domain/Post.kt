@@ -26,7 +26,7 @@ class Post(
 
         @Type(JsonType::class)
         @Column(name = "post_images", columnDefinition = "json")
-        var postImages: List<String>,
+        var postImages: List<String>
 
         ) : AbstractEntity() {
 
@@ -44,6 +44,10 @@ class Post(
             require(postImages.size in 1..10) { "사진은 1개 이상 10개 이하 등록해야합니다." }
         }
 
+    }
+
+    fun updateContent(content: String) {
+        this.content = content
     }
 
     fun increaseLikeCount() {

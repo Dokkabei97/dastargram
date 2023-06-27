@@ -14,7 +14,8 @@ sealed class PostRequest(
     ) : PostRequest(content, postImages)
 
     data class UpdatePostRequest(
-         val content: String?
+        val postId: Long,
+        val content: String?
     )
 
     data class DeletePostRequest(

@@ -8,4 +8,5 @@ import com.d1t.dastargram.domain.member.dto.MemberResponse.*
 interface MemberService {
     fun signUp(signUpMemberRequest: SignUpMemberRequest): MemberPublicResponse
     fun update(updateMemberRequest: UpdateMemberRequest): MemberPublicResponse
+    fun findById(memberId: Long): Member
 }
