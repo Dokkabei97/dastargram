@@ -9,7 +9,7 @@ import org.springframework.transaction.annotation.Transactional
 
 @Service
 @Transactional(readOnly = true)
-class MemberServiceImpl(val memberStore: MemberStore, val memberReader: MemberReader, private val passwordEncoder: PasswordEncoder) : MemberService {
+class MemberServiceImpl(val memberStore: MemberStore, val memberReader: MemberReader) : MemberService {
 
     @Transactional
     override fun signUp(signUpMemberRequest: SignUpMemberRequest): MemberPublicResponse {
@@ -19,7 +19,8 @@ class MemberServiceImpl(val memberStore: MemberStore, val memberReader: MemberRe
         val member = memberStore.create(
                 Member.create(
                         signUpMemberRequest.email,
-                        passwordEncoder.encode(signUpMemberRequest.password),
+//                        passwordEncoder.encode(signUpMemberRequest.password),
+                        signUpMemberRequest.password,
                         signUpMemberRequest.nickname,
                         signUpMemberRequest.name
                 )
@@ -40,7 +41,8 @@ class MemberServiceImpl(val memberStore: MemberStore, val memberReader: MemberRe
 
         member.apply {
             updateMemberRequest.password?.let {
-                updatePassword(passwordEncoder.encode(it))
+//                updatePassword(passwordEncoder.encode(it))
+                updatePassword(it)
             }
             updateMemberRequest.nickname?.let {
                 validateExistsNickname(it)
