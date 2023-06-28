@@ -12,7 +12,7 @@ import org.springframework.stereotype.Component
 import java.security.Key
 import java.util.*
 
-sealed class TokenProvider(
+sealed class JwtTokenProvider(
         secretKey: String,
         private val expireTime: Long
 ) {
@@ -44,7 +44,7 @@ sealed class TokenProvider(
     }
 
     fun refreshToken(token: String): String {
-        require(validateToken(token)) { "Invalid token." }
+        check(validateToken(token)) { "Invalid token." }
         val claims = Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token).body
         return generateToken(claims.subject.toLong())
     }
@@ -57,7 +57,7 @@ class AccessTokenProvider(
 
         @Value("\${jwt.access-token.expire-time}")
         accessTokenExpireTime: Long
-) : TokenProvider(accessTokenSecretKey, accessTokenExpireTime)
+) : JwtTokenProvider(accessTokenSecretKey, accessTokenExpireTime)
 
 @Component
 class RefreshTokenProvider(
@@ -66,4 +66,4 @@ class RefreshTokenProvider(
 
         @Value("\${jwt.refresh-token.expire-time}")
         refreshTokenExpireTime: Long
-) : TokenProvider(refreshTokenSecretKey, refreshTokenExpireTime)
+) : JwtTokenProvider(refreshTokenSecretKey, refreshTokenExpireTime)

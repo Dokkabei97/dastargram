@@ -5,13 +5,3 @@ spring:
 redis:
   host: localhost
   port: 6379
-
-# open-ssl rand -base64 32 로 만든 키 값
-# 토이프로젝트라 그냥 공개
-jwt:
-  access-token:
-    secret-key: QtvtPoR7jzKvMhNz287qdGMarNvORp+lgSELkuD393I=
-    expire-time: 1800000
-  refresh-token:
-    secret-key: AMG12t18NLkQTx3SnNTNSUzUnM4SdJZUGG9GZS4DVQY=
-    expire-time: 2592000000
