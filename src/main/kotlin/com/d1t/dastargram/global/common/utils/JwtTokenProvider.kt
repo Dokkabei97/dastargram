@@ -31,6 +31,7 @@ sealed class JwtTokenProvider(
                 .compact()
     }
 
+    // TODO: 재발급 로직을 위해 검증 로직 변경 필요
     fun validateToken(token: String): Boolean {
         return runCatching {
             val claims = Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token)
