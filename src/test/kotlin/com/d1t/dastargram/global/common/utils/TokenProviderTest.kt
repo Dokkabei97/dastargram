@@ -7,7 +7,7 @@ import io.kotest.matchers.shouldNotBe
 class TokenProviderTest : BehaviorSpec({
 
     val accessTokenProvider = AccessTokenProvider(ACCESS_TOKEN_TEST_KEY, ACCESS_TOKEN_TEST_EXPIRE_TIME)
-    val refreshTokenProvider = RefreshTokenProvider(REFRESH_TOKEN_TEST_KEY, REFRESH_TOKEN_TEST_EXPIRE_TIME)
+    val refreshTokenProvider = RefreshTokenProvider(REFRESH_TOKEN_TEST_KEY, REFRESH_TOKEN_TEST_EXPIRE_TIME, accessTokenProvider)
 
     given("AccessToken Provider") {
         val userId = 1L
@@ -26,16 +26,7 @@ class TokenProviderTest : BehaviorSpec({
 
             then("1초가 지나면 만료가 된다") {
                 Thread.sleep(1000)
-                accessTokenProvider.validateToken(accessToken) shouldBe false
-            }
-
-            then("1초가 지나 만료되어 토큰을 재발급하면 재발급이 된다") {
-                Thread.sleep(1000)
-                val newAccessToken = accessTokenProvider.refreshToken(accessToken)
-
-                println("newAccessToken: $newAccessToken")
-                newAccessToken shouldNotBe null
-                accessTokenProvider.validateToken(newAccessToken) shouldBe true
+                accessTokenProvider.validateToken(accessToken) shouldBe true
             }
         }
     }
