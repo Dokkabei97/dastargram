@@ -1,5 +1,6 @@
 package com.d1t.dastargram.global.common.utils
 
+import io.kotest.assertions.throwables.shouldThrow
 import io.kotest.core.spec.style.BehaviorSpec
 import io.kotest.matchers.shouldBe
 import io.kotest.matchers.shouldNotBe
@@ -16,7 +17,6 @@ class TokenProviderTest : BehaviorSpec({
             val accessToken = accessTokenProvider.generateToken(userId)
 
             then("accessToken은 생성된다") {
-                println("accessToken: $accessToken")
                 accessToken shouldNotBe null
             }
 
@@ -26,7 +26,17 @@ class TokenProviderTest : BehaviorSpec({
 
             then("1초가 지나면 만료가 된다") {
                 Thread.sleep(1000)
-                accessTokenProvider.validateToken(accessToken) shouldBe true
+                accessTokenProvider.validateToken(accessToken) shouldBe false
+            }
+
+            then("1초가 지나면 재발급용 검증 코드에서는 유효하다") {
+                accessTokenProvider.validateTokenForReissue(accessToken) shouldBe true
+            }
+        }
+
+        `when`("위조 jwt토큰을 검증하면") {
+            then("false를 반환한다") {
+                accessTokenProvider.validateToken(COUNTERFEIT_TOKEN) shouldBe false
             }
         }
     }
@@ -38,7 +48,6 @@ class TokenProviderTest : BehaviorSpec({
             val refreshToken = refreshTokenProvider.generateToken(userId)
 
             then("refreshToken은 생성된다") {
-                println("refreshToken: $refreshToken")
                 refreshToken shouldNotBe null
             }
 
@@ -51,6 +60,43 @@ class TokenProviderTest : BehaviorSpec({
                 refreshTokenProvider.validateToken(refreshToken) shouldBe false
             }
         }
+
+        `when`("위조 jwt토큰을 검증하면") {
+            then("false를 반환한다") {
+                refreshTokenProvider.validateToken(COUNTERFEIT_TOKEN) shouldBe false
+            }
+        }
+    }
+
+    given("AccessToken과 RefreshToken이 주어지고") {
+        val userId = 1L
+        val accessToken = accessTokenProvider.generateToken(userId)
+        val refreshToken = refreshTokenProvider.generateToken(userId)
+        `when`("토큰을 재발급을 요청하면") {
+            Thread.sleep(1000)
+            val newAccessToken = refreshTokenProvider.reissueToken(accessToken, refreshToken)
+
+            then("새로운 accessToken이 발급된다") {
+                newAccessToken shouldNotBe null
+            }
+
+            then("새로운 accessToken은 유효하다") {
+                accessTokenProvider.validateToken(newAccessToken.first) shouldBe true
+            }
+
+            then("새로운 accessToken은 기존 accessToken과 다르다") {
+                newAccessToken shouldNotBe accessToken
+            }
+        }
+
+        `when`("토큰을 재발급을 요청하는데 refreshToken이 만료되면") {
+            Thread.sleep(2000)
+            then("IllegalStateException이 나온다") {
+                val exception = shouldThrow<IllegalStateException> {
+                    refreshTokenProvider.reissueToken(accessToken, refreshToken)
+                }
+            }
+        }
     }
 }) {
     companion object {
@@ -58,5 +104,6 @@ class TokenProviderTest : BehaviorSpec({
         const val ACCESS_TOKEN_TEST_EXPIRE_TIME: Long = 1000L
         const val REFRESH_TOKEN_TEST_KEY: String = "VI7tgck4PV55Tj7O5ZVbWgIN2scM/UqEX9Zvs68TeOw="
         const val REFRESH_TOKEN_TEST_EXPIRE_TIME: Long = 2000L
+        const val COUNTERFEIT_TOKEN: String = "eyJhbGCIoDanawa1NiJ9.EYjZDwiiOiIxConnectWavexNjg4MDM4MDI5fQ.Ktc8Y2SnDXktORassslgxsiKFCLPeAMSd45M3JGzlYA"
     }
 }

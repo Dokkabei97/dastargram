@@ -41,6 +41,18 @@ class AccessTokenProvider(
             true
         }.getOrElse { e ->
             when (e) {
+                is MalformedJwtException, is SignatureException, is ExpiredJwtException -> false
+                else -> throw e
+            }
+        }
+    }
+
+    fun validateTokenForReissue(token: String): Boolean {
+        return runCatching {
+            Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token)
+            true
+        }.getOrElse { e ->
+            when (e) {
                 is MalformedJwtException, is SignatureException -> false
                 is ExpiredJwtException -> true
                 else -> throw e

@@ -49,9 +49,10 @@ class RefreshTokenProvider(
         }
     }
 
-    fun refreshToken(token: String): Pair<String, String> {
-        require(validateToken(token)) { "Invalid token." }
-        val claims = Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token).body
+    fun reissueToken(accessToken: String, refreshToken: String): Pair<String, String> {
+        check(accessTokenProvider.validateTokenForReissue(accessToken)) { "AccessToken 검증 실패" }
+        check(validateToken(refreshToken)) { "RefreshToken 검증 실패" }
+        val claims = Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(refreshToken).body
         val userId = claims.subject.toLong()
         return accessTokenProvider.generateToken(userId) to generateToken(userId)
     }
