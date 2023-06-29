@@ -38,7 +38,6 @@ class RefreshTokenProvider(
     }
 
     override fun validateToken(token: String): Boolean {
-        // Refresh tokens are considered invalid upon expiration
         return runCatching {
             val claims = Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token)
             !claims.body.expiration.before(Date())
