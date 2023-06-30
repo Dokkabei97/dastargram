@@ -4,7 +4,7 @@ import jakarta.validation.constraints.NotBlank
 
 class CommentRequest {
 
-    data class createCommentRequest(
+    data class insertRequest(
         @field:NotBlank
         val content: String,
         @field:NotBlank
@@ -13,7 +13,7 @@ class CommentRequest {
         val memberId: Long,
     )
 
-    data class modifyCommentRequest(
+    data class updateRequest(
         @field:NotBlank
         val id: Long,
         @field:NotBlank
@@ -22,8 +22,10 @@ class CommentRequest {
         val memberId: Long,
     )
 
-    data class removeCommentRequest(
+    data class deleteRequest(
         @field:NotBlank
         val id: Long,
+        @field:NotBlank
+        val memberId: Long
     )
 }

@@ -5,9 +5,9 @@ import com.d1t.dastargram.domain.comment.dto.CommentResponse
 
 interface CommentService {
 
-    fun createComment(createCommentRequest: CommentRequest.createCommentRequest): CommentResponse
+    fun insert(insertRequest: CommentRequest.insertRequest): CommentResponse
 
-    fun modifyComment(modifyCommentRequest: CommentRequest.modifyCommentRequest): CommentResponse
+    fun update(updateRequest: CommentRequest.updateRequest): CommentResponse
 
-    fun removeComment(removeCommentRequest: CommentRequest.removeCommentRequest): CommentResponse
+    fun delete(deleteRequest: CommentRequest.deleteRequest)
 }

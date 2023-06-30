@@ -60,7 +60,7 @@ class Comment(
         }
     }
 
-    fun updateComment(content: String) {
+    fun updateContent(content: String) {
         this.content = content
     }
 

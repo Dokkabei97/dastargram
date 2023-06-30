@@ -34,7 +34,7 @@ class CommentTest : DescribeSpec({
         context("댓글 내용을 수정하면") {
             it("댓글 내용이 수정된다.") {
                 val newContent = "newComment"
-                comment.updateComment(newContent)
+                comment.updateContent(newContent)
                 comment.content shouldBe newContent
             }
         }
