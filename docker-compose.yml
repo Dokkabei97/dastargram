@@ -18,7 +18,7 @@ services:
 
   dastar-redis:
     container_name: dastar-redis
-    image: redis:7.0.1
+    image: redis:7.0.5
     ports:
       - "6379:6379"
     command: redis-server --requirepass redis-pass
