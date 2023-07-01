@@ -43,7 +43,7 @@ class MemberServiceImplTest : BehaviorSpec({
         val member = Member.create(TEST_EMAIL, TEST_PASSWORD, TEST_NICKNAME, TEST_NAME)
         val memberResponse = MemberResponse.MemberPublicResponse(TEST_NICKNAME, TEST_NAME, null)
 
-        every { memberReader.findById(any()) } returns member
+        every { memberReader.getMemberById(any()) } returns member
         every { memberReader.isExistsByNickname(any()) } returns false
 
         `when`("회원정보 수정 요청") {
@@ -52,7 +52,7 @@ class MemberServiceImplTest : BehaviorSpec({
             then("회원정보 수정 성공") {
                 result shouldBe memberResponse
 
-                verify(exactly = 1) { memberReader.findById(any()) }
+                verify(exactly = 1) { memberReader.getMemberById(any()) }
             }
         }
     }

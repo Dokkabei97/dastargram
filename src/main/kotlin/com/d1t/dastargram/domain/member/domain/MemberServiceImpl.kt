@@ -3,7 +3,6 @@ package com.d1t.dastargram.domain.member.domain
 import com.d1t.dastargram.domain.member.dto.MemberRequest.SignUpMemberRequest
 import com.d1t.dastargram.domain.member.dto.MemberRequest.UpdateMemberRequest
 import com.d1t.dastargram.domain.member.dto.MemberResponse.*
-import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 
@@ -37,7 +36,7 @@ class MemberServiceImpl(val memberStore: MemberStore, val memberReader: MemberRe
 
     @Transactional
     override fun update(updateMemberRequest: UpdateMemberRequest): MemberPublicResponse {
-        val member = memberReader.findById(updateMemberRequest.memberId)
+        val member = memberReader.getMemberById(updateMemberRequest.memberId)
 
         member.apply {
             updateMemberRequest.password?.let {
