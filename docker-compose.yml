@@ -21,6 +21,6 @@ services:
     image: redis:7.0.5
     ports:
       - "6379:6379"
-    command: redis-server --requirepass redis-pass
+    command: redis-server --requirepass danawa-pass
     environment:
       - TZ=Asia/Seoul

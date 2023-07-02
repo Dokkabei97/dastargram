@@ -30,6 +30,8 @@ class RedisConfiguration {
         return LettuceConnectionFactory(host, port)
     }
 
+    // RedisTemplate 설정
+    // RedisTemplate은 Redis에 데이터를 저장하고 조회하기 위한 인터페이스
     @Bean
     fun redisTemplate(): RedisTemplate<*, *> {
         val redisTemplate = RedisTemplate<Any, Any>()
@@ -39,6 +41,8 @@ class RedisConfiguration {
         return redisTemplate
     }
 
+    // StringRedisTemplate 설정
+    // StringRedisTemplate은 RedisTemplate을 상속받아 String 타입의 데이터를 저장하고 조회하기 위한 인터페이스
     @Bean
     fun stringRedisTemplate(): StringRedisTemplate {
         val stringRedisTemplate = StringRedisTemplate()
