@@ -7,9 +7,11 @@ import org.springframework.data.redis.connection.RedisConnectionFactory
 import org.springframework.data.redis.connection.lettuce.LettuceConnectionFactory
 import org.springframework.data.redis.core.RedisTemplate
 import org.springframework.data.redis.core.StringRedisTemplate
+import org.springframework.data.redis.repository.configuration.EnableRedisRepositories
 import org.springframework.data.redis.serializer.StringRedisSerializer
 
 @Configuration
+@EnableRedisRepositories
 class RedisConfiguration {
 
     /**
@@ -17,10 +19,10 @@ class RedisConfiguration {
      *  @Value() 를 사용할 때 \를 붙여 이스케이프를 해줘야 한다.
      *  @Value()로 값을 주입 받다보니 var을 사용해야 한다.
      */
-    @Value("\${redis.host}")
+    @Value("\${spring.data.redis.host}")
     var host: String = "localhost"
 
-    @Value("\${redis.port}")
+    @Value("\${spring.data.redis.port}")
     var port: Int = 6379
 
     @Bean
