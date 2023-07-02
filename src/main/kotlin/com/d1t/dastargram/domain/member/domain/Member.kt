@@ -39,7 +39,6 @@ class Member(
 
     companion object {
         private const val EMAIL_REGEX = "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,6}$"
-        private const val PASSWORD_REGEX = "^[a-zA-Z0-9!@#$%^&*()?_~]{8,15}$"
         private const val NICKNAME_REGEX = "^[가-힣a-zA-Z0-9]{2,10}$"
         private const val NAME_REGEX = "^[가-힣a-zA-Z]{2,10}$"
 
@@ -59,8 +58,6 @@ class Member(
 
         private fun validatePassword(password: String) {
             require(password.isNotBlank()) { "비밀번호는 필수입니다." }
-            require(password.length in 8..15) { "비밀번호는 8~15자리여야 합니다." }
-            require(password.matches(Regex(PASSWORD_REGEX))) { "비밀번호는 영문 대소문자, 숫자, 특수문자(!@#$%^&*()?_~)로만 구성되어야 합니다." }
         }
 
         private fun validateNickname(nickname: String) {

@@ -82,9 +82,9 @@ dependencies {
     kapt("org.springframework.boot:spring-boot-configuration-processor")
 
     // actuator 추가 구성 (프로메테우스, 인플럭스DB)
-    implementation("org.springframework.boot:spring-boot-starter-actuator")
-    runtimeOnly("io.micrometer:micrometer-registry-influx")
-    runtimeOnly("io.micrometer:micrometer-registry-prometheus")
+//    implementation("org.springframework.boot:spring-boot-starter-actuator")
+//    runtimeOnly("io.micrometer:micrometer-registry-influx")
+//    runtimeOnly("io.micrometer:micrometer-registry-prometheus")
 
     // kotest 라이브러리 (코틀린 테스트 라이브러리)
     implementation("io.kotest:kotest-property-jvm:5.6.1")
