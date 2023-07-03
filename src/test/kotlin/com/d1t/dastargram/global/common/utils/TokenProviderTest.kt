@@ -8,13 +8,14 @@ import io.kotest.matchers.shouldNotBe
 class TokenProviderTest : BehaviorSpec({
 
     val accessTokenProvider = AccessTokenProvider(ACCESS_TOKEN_TEST_KEY, ACCESS_TOKEN_TEST_EXPIRE_TIME)
-    val refreshTokenProvider = RefreshTokenProvider(REFRESH_TOKEN_TEST_KEY, REFRESH_TOKEN_TEST_EXPIRE_TIME, accessTokenProvider)
+    val refreshTokenProvider = RefreshTokenProvider(REFRESH_TOKEN_TEST_KEY, REFRESH_TOKEN_TEST_EXPIRE_TIME)
 
     given("AccessToken Provider") {
-        val userId = 1L
+        val email = "test@test.com"
+        val authorities = "ROLE_USER"
 
         `when`("accessToken을 생성하면") {
-            val accessToken = accessTokenProvider.generateToken(userId)
+            val accessToken = accessTokenProvider.generateToken(email, authorities)
 
             then("accessToken은 생성된다") {
                 accessToken shouldNotBe null
@@ -42,10 +43,8 @@ class TokenProviderTest : BehaviorSpec({
     }
 
     given("RefreshToken Provider") {
-        val userId = 1L
-
         `when`("userId가 제공이되고") {
-            val refreshToken = refreshTokenProvider.generateToken(userId)
+            val refreshToken = refreshTokenProvider.generateToken()
 
             then("refreshToken은 생성된다") {
                 refreshToken shouldNotBe null
@@ -69,9 +68,10 @@ class TokenProviderTest : BehaviorSpec({
     }
 
     given("AccessToken과 RefreshToken이 주어지고") {
-        val userId = 1L
-        val accessToken = accessTokenProvider.generateToken(userId)
-        val refreshToken = refreshTokenProvider.generateToken(userId)
+        val email = "test@test.com"
+        val authorities = "ROLE_USER"
+        val accessToken = accessTokenProvider.generateToken(email, authorities)
+        val refreshToken = refreshTokenProvider.generateToken()
         `when`("토큰을 재발급을 요청하면") {
             Thread.sleep(1000)
             val newAccessToken = refreshTokenProvider.reissueToken(accessToken, refreshToken)
