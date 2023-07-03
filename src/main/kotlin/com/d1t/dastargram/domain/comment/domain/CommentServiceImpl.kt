@@ -63,4 +63,6 @@ class CommentServiceImpl(val memberReader: MemberReader, val postReader: PostRea
 
         commentStore.deleteById(deleteRequest.id)
     }
+
+
 }

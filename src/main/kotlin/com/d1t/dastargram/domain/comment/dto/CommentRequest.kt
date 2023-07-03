@@ -1,31 +1,32 @@
 package com.d1t.dastargram.domain.comment.dto
 
 import jakarta.validation.constraints.NotBlank
+import jakarta.validation.constraints.NotNull
 
 class CommentRequest {
 
     data class insertRequest(
         @field:NotBlank
         val content: String,
-        @field:NotBlank
+        @field:NotNull
         val postId: Long,
-        @field:NotBlank
+        @field:NotNull
         val memberId: Long,
     )
 
     data class updateRequest(
-        @field:NotBlank
+        @field:NotNull
         val id: Long,
         @field:NotBlank
         val content: String,
-        @field:NotBlank
+        @field:NotNull
         val memberId: Long,
     )
 
     data class deleteRequest(
-        @field:NotBlank
+        @field:NotNull
         val id: Long,
-        @field:NotBlank
+        @field:NotNull
         val memberId: Long
     )
 }

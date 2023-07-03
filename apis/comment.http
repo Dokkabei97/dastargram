@@ -1,0 +1,21 @@
+POST http://localhost:8080/api/v1/comments
+Content-Type: application/json
+
+{
+  "content": "댓글테스트",
+  "postId": 123123,
+  "memberId": 12123
+}
+
+###
+
+PUT http://localhost:8080/api/v1/members
+Content-Type: application/json
+
+{
+  "memberId": 1,
+  "nickname": "조선해적",
+  "name": "김길동",
+  "password": null,
+  "profileImage": null
+}

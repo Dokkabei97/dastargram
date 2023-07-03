@@ -3,15 +3,7 @@ package com.d1t.dastargram.domain.comment.domain
 import com.d1t.dastargram.domain.member.domain.Member
 import com.d1t.dastargram.domain.post.domain.Post
 import com.d1t.dastargram.global.common.entity.AbstractEntity
-import jakarta.persistence.Column
-import jakarta.persistence.Entity
-import jakarta.persistence.FetchType
-import jakarta.persistence.GeneratedValue
-import jakarta.persistence.GenerationType
-import jakarta.persistence.Id
-import jakarta.persistence.JoinColumn
-import jakarta.persistence.ManyToOne
-import jakarta.persistence.Table
+import jakarta.persistence.*
 
 /**
  * 댓글 Entity
@@ -36,7 +28,7 @@ class Comment(
 
     //게시글 정보
     @ManyToOne(fetch = FetchType.LAZY)
-    @Column(name = "post_id")
+    @JoinColumn(name = "post_id")
     var post: Post,
 
     @Column(name = "comment_like_count", columnDefinition = "int default 0")
