@@ -34,7 +34,7 @@ sealed class JwtTokenProvider(
         return Jwts.builder()
                 .setHeaderParam("typ", "JWT")
                 .setHeaderParam("alg", "HS256")
-                .setSubject(SUBJECT)
+                .setSubject(ACCESS_TOKEN_SUBJECT)
                 .setExpiration(Date(System.currentTimeMillis() + expireTime))
                 .claim(URL, true)
                 .claim(EMAIL_KEY, email)
@@ -48,7 +48,7 @@ sealed class JwtTokenProvider(
         return Jwts.builder()
                 .setHeaderParam("typ", "JWT")
                 .setHeaderParam("alg", "HS256")
-                .setSubject(SUBJECT)
+                .setSubject(REFRESH_TOKEN_SUBJECT)
                 .setExpiration(Date(System.currentTimeMillis() + expireTime))
                 .signWith(key, SignatureAlgorithm.HS256)
                 .compact()
@@ -109,7 +109,8 @@ sealed class JwtTokenProvider(
 
     companion object {
         private const val URL: String = "http://localhost:8080"
-        private const val SUBJECT: String = "AccessToken"
+        private const val ACCESS_TOKEN_SUBJECT: String = "AccessToken"
+        private const val REFRESH_TOKEN_SUBJECT: String = "RefreshToken"
         private const val EMAIL_KEY: String = "email"
         private const val AUTHORITIES_KEY: String = "role"
     }
