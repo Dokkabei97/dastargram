@@ -38,6 +38,9 @@ class MemberServiceImplTest : BehaviorSpec({
             then("회원가입 성공") {
                 result shouldBe memberResponse
 
+                verify(exactly = 1) { memberReader.isExistsByEmail(any()) }
+                verify(exactly = 1) { memberReader.isExistsByNickname(any()) }
+                verify(exactly = 1) { passwordEncoder.encode(any()) }
                 verify(exactly = 1) { memberStore.create(any()) }
             }
         }
@@ -74,7 +77,6 @@ class MemberServiceImplTest : BehaviorSpec({
                 exception.message shouldBe "비밀번호는 영문 대소문자, 숫자, 특수문자(!@#\$%^&*()?_~)로만 구성되어야 합니다."
             }
         }
-
 
         `when`("이미 존재하는 이메일로 회원가입 요청") {
             every { memberReader.isExistsByEmail(any()) } returns true
@@ -117,6 +119,7 @@ class MemberServiceImplTest : BehaviorSpec({
                 result shouldBe memberResponse
 
                 verify(exactly = 1) { memberReader.getMemberById(any()) }
+                verify(exactly = 1) { memberReader.isExistsByNickname(any()) }
             }
         }
 
