@@ -22,7 +22,15 @@ sealed class JwtTokenProvider(
         key = Keys.hmacShaKeyFor(keyBytes)
     }
 
+    /**
+     * open하고 override 안하는 이유는
+     * accessToken은 email과 authorities를 claim에 넣어야 하고
+     * refreshToken은 claim에 아무것도 넣지 않아야 하기 때문
+     * 그래서 check(this is AccessTokenProvider)로 AccessTokenProvider가 아닐 경우 에러를 발생시킴으로
+     * RefreshTokenProvider가 해당 generateToken을 호출하지 못하도록 함
+     */
     fun generateToken(email: String, authorities: String): String {
+        check(this is AccessTokenProvider) { "AccessTokenProvider가 아닙니다."}
         return Jwts.builder()
                 .setHeaderParam("typ", "JWT")
                 .setHeaderParam("alg", "HS256")
@@ -36,7 +44,11 @@ sealed class JwtTokenProvider(
     }
 
     fun generateToken(): String {
+        check(this is RefreshTokenProvider) { "RefreshTokenProvider가 아닙니다."}
         return Jwts.builder()
+                .setHeaderParam("typ", "JWT")
+                .setHeaderParam("alg", "HS256")
+                .setSubject(SUBJECT)
                 .setExpiration(Date(System.currentTimeMillis() + expireTime))
                 .signWith(key, SignatureAlgorithm.HS256)
                 .compact()
@@ -49,10 +61,9 @@ sealed class JwtTokenProvider(
         }.getOrElse { e ->
             when (e) {
                 is MalformedJwtException, is SignatureException, is ExpiredJwtException, is UnsupportedJwtException -> {
-                    log.error("AccessToken 검증 실패", e)
+                    log.error("Token 검증 실패", e)
                     false
                 }
-
                 else -> {
                     throw e
                 }
@@ -60,19 +71,33 @@ sealed class JwtTokenProvider(
         }
     }
 
+    /**
+     * AccessToken 재발급 검증 코드
+     * AccessToken이 만료되었을 경우 true를 반환
+     * AccessToken이 만료가 안되었거나 검증에 실패했을 경우 false를 반환
+     */
     fun validateTokenForReissue(token: String): Boolean {
         return runCatching {
             Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token)
-            true
+            false
         }.getOrElse { e ->
             when (e) {
-                is MalformedJwtException, is SignatureException -> false
                 is ExpiredJwtException -> true
+                is MalformedJwtException, is SignatureException -> {
+                    log.error("AccessToken 검증 실패", e)
+                    false
+                }
                 else -> throw e
             }
         }
     }
 
+    /**
+     * 토큰 재발급 코드
+     * AccessToken이 만료되었을 경우 AccessToken과 RefreshToken을 재발급
+     * AccessToken이 만료가 안되었거나 검증에 실패했을 경우 에러 발생
+     * RefreshToken이 만료되었거나 검증에 실패했을 경우 에러 발생
+     */
     fun reissueToken(accessToken: String, refreshToken: String): Pair<String, String> {
         check(validateTokenForReissue(accessToken)) { "AccessToken 검증 실패" }
         check(validateToken(refreshToken)) { "RefreshToken 검증 실패" }

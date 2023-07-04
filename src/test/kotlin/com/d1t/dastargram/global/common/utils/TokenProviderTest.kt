@@ -40,6 +40,14 @@ class TokenProviderTest : BehaviorSpec({
                 accessTokenProvider.validateToken(COUNTERFEIT_TOKEN) shouldBe false
             }
         }
+
+        `when`("generateToken() 함수를 호출시") {
+            then("RefreshTokenProvider가 아니면 에러가 발생한다") {
+                shouldThrow<IllegalStateException> {
+                    accessTokenProvider.generateToken()
+                }
+            }
+        }
     }
 
     given("RefreshToken Provider") {
@@ -63,6 +71,14 @@ class TokenProviderTest : BehaviorSpec({
         `when`("위조 jwt토큰을 검증하면") {
             then("false를 반환한다") {
                 refreshTokenProvider.validateToken(COUNTERFEIT_TOKEN) shouldBe false
+            }
+        }
+
+        `when`("generateToken(email, authorities) 함수를 호출시") {
+            then("AccessTokenProvider가 아니면 에러가 발생한다") {
+                shouldThrow<IllegalStateException> {
+                    refreshTokenProvider.generateToken("", "")
+                }
             }
         }
     }
