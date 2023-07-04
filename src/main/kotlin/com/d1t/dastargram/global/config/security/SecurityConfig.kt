@@ -19,6 +19,12 @@ class SecurityConfig {
     @Bean
     fun passwordEncoder(): PasswordEncoder = BCryptPasswordEncoder()
 
+    /**
+     * Spring Security Kotlin DSL 작성방법
+     * import org.springframework.security.config.annotation.web.invoke 해당 패키지를 import 해야함
+     * 공식문서에서는 다른 패키지로 표기되어 있으니 조심
+     * 공식문서에도 IDE가 import를 자동으로 해주지 않음
+     */
     @Bean
     fun filterChain(http: HttpSecurity): SecurityFilterChain {
         http {
@@ -44,6 +50,10 @@ class SecurityConfig {
         return http.build()
     }
 
+    /**
+     * Spring Security Kotlin 작성방법
+     * Kotlin에서 기존 Java 처럼 http.csrf() 사용시 depreacted로 표시됨
+     */
 
 //    @Bean
 //    fun filterChain(http: HttpSecurity): SecurityFilterChain {
