@@ -80,6 +80,7 @@ sealed class JwtTokenProvider(
      * AccessToken이 만료가 안되었거나 검증에 실패했을 경우 false를 반환
      */
     fun validateTokenForReissue(token: String): Boolean {
+        check(this is AccessTokenProvider) { "AccessTokenProvider가 아닙니다." }
         return runCatching {
             Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token)
             false
@@ -96,21 +97,6 @@ sealed class JwtTokenProvider(
         }
     }
 
-    /**
-     * 토큰 재발급 코드
-     * AccessToken이 만료되었을 경우 AccessToken과 RefreshToken을 재발급
-     * AccessToken이 만료가 안되었거나 검증에 실패했을 경우 에러 발생
-     * RefreshToken이 만료되었거나 검증에 실패했을 경우 에러 발생
-     */
-    fun reissueToken(accessToken: String, refreshToken: String): Pair<String, String> {
-        check(validateTokenForReissue(accessToken)) { "AccessToken 검증 실패" }
-        check(validateToken(refreshToken)) { "RefreshToken 검증 실패" }
-        val claims = Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(refreshToken).body
-        val email = claims[EMAIL_KEY] as String
-        val authorities = claims[AUTHORITIES_KEY] as String
-        return generateToken(email, authorities) to generateToken()
-    }
-
     fun getAuthentication(token: String): Authentication {
         val email = getClaims(token)[EMAIL_KEY] as String
         val userDetailsImpl = userDetailsService.loadUserByUsername(email)
@@ -121,27 +107,29 @@ sealed class JwtTokenProvider(
         )
     }
 
-    private fun getClaims(token: String): Claims {
+    fun getClaims(token: String): Claims {
         return runCatching {
             Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token).body
         }.getOrElse { e ->
             when (e) {
-                is MalformedJwtException, is SignatureException, is ExpiredJwtException, is UnsupportedJwtException -> {
+                is MalformedJwtException, is SignatureException, is UnsupportedJwtException -> {
                     log.error("Token 검증 실패", e)
                     throw e
                 }
-
+                is ExpiredJwtException -> {
+                    return e.claims
+                }
                 else -> throw e
             }
         }
     }
 
     companion object {
-        private const val URL: String = "http://localhost:8080"
-        private const val ACCESS_TOKEN_SUBJECT: String = "access-token"
-        private const val REFRESH_TOKEN_SUBJECT: String = "refresh-token"
-        private const val EMAIL_KEY: String = "email"
-        private const val AUTHORITIES_KEY: String = "role"
+        const val URL: String = "http://localhost:8080"
+        const val ACCESS_TOKEN_SUBJECT: String = "access-token"
+        const val REFRESH_TOKEN_SUBJECT: String = "refresh-token"
+        const val EMAIL_KEY: String = "email"
+        const val AUTHORITIES_KEY: String = "role"
     }
 }
 
@@ -164,5 +152,5 @@ class RefreshTokenProvider(
         @Value("\${jwt.refresh-token.expire-time}")
         private val refreshTokenExpireTime: Long,
 
-        userDetailsService: UserDetailsService
+        userDetailsService: UserDetailsService,
 ) : JwtTokenProvider(refreshTokenSecretKey, refreshTokenExpireTime, userDetailsService)

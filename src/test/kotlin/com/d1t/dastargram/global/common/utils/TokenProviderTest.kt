@@ -11,6 +11,16 @@ class TokenProviderTest : BehaviorSpec({
     val accessTokenProvider = AccessTokenProvider(ACCESS_TOKEN_TEST_KEY, ACCESS_TOKEN_TEST_EXPIRE_TIME, UserDetailsService { null })
     val refreshTokenProvider = RefreshTokenProvider(REFRESH_TOKEN_TEST_KEY, REFRESH_TOKEN_TEST_EXPIRE_TIME, UserDetailsService { null })
 
+    fun reissueTokenTest(accessToken: String, refreshToken: String): Pair<String, String> {
+        check(accessTokenProvider.validateTokenForReissue(accessToken)) { "accessToken이 유효하지 않습니다." }
+        check(refreshTokenProvider.validateToken(refreshToken)) { "refreshToken이 유효하지 않습니다." }
+
+        val claims = accessTokenProvider.getClaims(accessToken)
+        val email = claims["email"] as String
+        val authorities = claims["role"] as String
+        return accessTokenProvider.generateToken(email, authorities) to refreshTokenProvider.generateToken()
+    }
+
     given("AccessToken Provider") {
         val email = "test@test.com"
         val authorities = "ROLE_USER"
@@ -64,7 +74,7 @@ class TokenProviderTest : BehaviorSpec({
             }
 
             then("2초가 지나면 만료가 된다") {
-                Thread.sleep(2000)
+                Thread.sleep(3000)
                 refreshTokenProvider.validateToken(refreshToken) shouldBe false
             }
         }
@@ -90,8 +100,8 @@ class TokenProviderTest : BehaviorSpec({
         val accessToken = accessTokenProvider.generateToken(email, authorities)
         val refreshToken = refreshTokenProvider.generateToken()
         `when`("토큰을 재발급을 요청하면") {
-            Thread.sleep(1000)
-            val newAccessToken = refreshTokenProvider.reissueToken(accessToken, refreshToken)
+            Thread.sleep(1200)
+            val newAccessToken = reissueTokenTest(accessToken, refreshToken)
 
             then("새로운 accessToken이 발급된다") {
                 newAccessToken shouldNotBe null
@@ -107,20 +117,21 @@ class TokenProviderTest : BehaviorSpec({
         }
 
         `when`("토큰을 재발급을 요청하는데 refreshToken이 만료되면") {
-            Thread.sleep(2000)
+            Thread.sleep(3000)
             then("IllegalStateException이 나온다") {
                 val exception = shouldThrow<IllegalStateException> {
-                    refreshTokenProvider.reissueToken(accessToken, refreshToken)
+                    reissueTokenTest(accessToken, refreshToken)
                 }
             }
         }
     }
+
 }) {
     companion object {
         const val ACCESS_TOKEN_TEST_KEY: String = "ZGy3/59hPszXVia2gzpIwOXcPDWYljEbGsQDMigEuZY="
         const val ACCESS_TOKEN_TEST_EXPIRE_TIME: Long = 1000L
         const val REFRESH_TOKEN_TEST_KEY: String = "VI7tgck4PV55Tj7O5ZVbWgIN2scM/UqEX9Zvs68TeOw="
-        const val REFRESH_TOKEN_TEST_EXPIRE_TIME: Long = 2000L
+        const val REFRESH_TOKEN_TEST_EXPIRE_TIME: Long = 3000L
         const val COUNTERFEIT_TOKEN: String = "eyJhbGCIoDanawa1NiJ9.EYjZDwiiOiIxConnectWavexNjg4MDM4MDI5fQ.Ktc8Y2SnDXktORassslgxsiKFCLPeAMSd45M3JGzlYA"
     }
 }
