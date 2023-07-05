@@ -10,4 +10,5 @@ interface MemberRepository: JpaRepository<Member, Long> {
     fun findByNickname(nickname: String): Member?
     fun findByNameLike(name: String): List<Member>?
     fun findByNicknameLike(nickname: String): List<Member>?
+    fun findByEmail(email: String): Member?
 }

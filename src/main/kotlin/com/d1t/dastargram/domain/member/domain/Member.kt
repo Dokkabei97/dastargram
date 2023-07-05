@@ -35,6 +35,10 @@ class Member(
         @Column(name = "post_count")
         var postCount: Int = 0,
 
+        @Enumerated(EnumType.STRING)
+        @Column(name = "role")
+        var role: Role = Role.MEMBER
+
         ) : AbstractEntity() {
 
     companion object {

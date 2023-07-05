@@ -1,8 +1,14 @@
 package com.d1t.dastargram.global.config.security
 
 import com.d1t.dastargram.global.common.filter.JwtAuthenticationFilter
+import com.d1t.dastargram.global.common.security.JwtAccessDeniedHandler
+import com.d1t.dastargram.global.common.security.JwtAuthenticationEntryPoint
+import com.d1t.dastargram.global.common.utils.AccessTokenProvider
+import com.d1t.dastargram.global.common.utils.RefreshTokenProvider
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
+import org.springframework.security.authentication.AuthenticationManager
+import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration
 import org.springframework.security.config.annotation.web.builders.HttpSecurity
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity
 import org.springframework.security.config.annotation.web.invoke
@@ -14,7 +20,12 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 
 @Configuration
 @EnableWebSecurity
-class SecurityConfig {
+class SecurityConfig(
+        val accessTokenProvider: AccessTokenProvider,
+        val refreshTokenProvider: RefreshTokenProvider,
+        val jwtAccessDeniedHandler: JwtAccessDeniedHandler,
+        val jwtAuthenticationEntryPoint: JwtAuthenticationEntryPoint
+) {
 
     @Bean
     fun passwordEncoder(): PasswordEncoder = BCryptPasswordEncoder()
@@ -35,8 +46,8 @@ class SecurityConfig {
                 sessionCreationPolicy = SessionCreationPolicy.STATELESS
             }
             exceptionHandling {
-                authenticationEntryPoint
-                accessDeniedHandler
+                authenticationEntryPoint = jwtAuthenticationEntryPoint
+                accessDeniedHandler = jwtAccessDeniedHandler
             }
             authorizeRequests {
                 authorize(anyRequest, permitAll)
@@ -45,10 +56,17 @@ class SecurityConfig {
                 frameOptions { sameOrigin }
             }
         }
-        http.addFilterBefore(JwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter::class.java)
+        http.addFilterBefore(JwtAuthenticationFilter(
+                accessTokenProvider,
+                refreshTokenProvider
+        ), UsernamePasswordAuthenticationFilter::class.java)
 
         return http.build()
     }
+
+    @Bean
+    fun authenticationManager(authenticationConfiguration: AuthenticationConfiguration): AuthenticationManager = authenticationConfiguration.authenticationManager
+
 
     /**
      * Spring Security Kotlin 작성방법

@@ -20,4 +20,7 @@ class MemberReaderImpl(val memberRepository: MemberRepository) : MemberReader {
     override fun getMembersByName(name: String): List<Member> = memberRepository.findByName(name)
             ?: throw EntityNotFoundException("존재하지 않는 회원입니다.")
 
+    override fun getMemberByEmail(email: String): Member = memberRepository.findByEmail(email)
+            ?: throw EntityNotFoundException("존재하지 않는 회원입니다.")
+
 }

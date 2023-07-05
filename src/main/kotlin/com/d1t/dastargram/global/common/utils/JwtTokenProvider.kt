@@ -6,13 +6,17 @@ import io.jsonwebtoken.security.Keys
 import io.jsonwebtoken.security.SignatureException
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Value
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
+import org.springframework.security.core.Authentication
+import org.springframework.security.core.userdetails.UserDetailsService
 import org.springframework.stereotype.Component
 import java.security.Key
 import java.util.*
 
 sealed class JwtTokenProvider(
         secretKey: String,
-        private val expireTime: Long
+        private val expireTime: Long,
+        private val userDetailsService: UserDetailsService
 ) {
     private val key: Key
     private val log = LoggerFactory.getLogger(this::class.java)
@@ -30,7 +34,7 @@ sealed class JwtTokenProvider(
      * RefreshTokenProvider가 해당 generateToken을 호출하지 못하도록 함
      */
     fun generateToken(email: String, authorities: String): String {
-        check(this is AccessTokenProvider) { "AccessTokenProvider가 아닙니다."}
+        check(this is AccessTokenProvider) { "AccessTokenProvider가 아닙니다." }
         return Jwts.builder()
                 .setHeaderParam("typ", "JWT")
                 .setHeaderParam("alg", "HS256")
@@ -44,7 +48,7 @@ sealed class JwtTokenProvider(
     }
 
     fun generateToken(): String {
-        check(this is RefreshTokenProvider) { "RefreshTokenProvider가 아닙니다."}
+        check(this is RefreshTokenProvider) { "RefreshTokenProvider가 아닙니다." }
         return Jwts.builder()
                 .setHeaderParam("typ", "JWT")
                 .setHeaderParam("alg", "HS256")
@@ -64,9 +68,8 @@ sealed class JwtTokenProvider(
                     log.error("Token 검증 실패", e)
                     false
                 }
-                else -> {
-                    throw e
-                }
+
+                else -> throw e
             }
         }
     }
@@ -87,6 +90,7 @@ sealed class JwtTokenProvider(
                     log.error("AccessToken 검증 실패", e)
                     false
                 }
+
                 else -> throw e
             }
         }
@@ -107,10 +111,35 @@ sealed class JwtTokenProvider(
         return generateToken(email, authorities) to generateToken()
     }
 
+    fun getAuthentication(token: String): Authentication {
+        val email = getClaims(token)[EMAIL_KEY] as String
+        val userDetailsImpl = userDetailsService.loadUserByUsername(email)
+        return UsernamePasswordAuthenticationToken(
+                userDetailsImpl,
+                "",
+                userDetailsImpl.authorities
+        )
+    }
+
+    private fun getClaims(token: String): Claims {
+        return runCatching {
+            Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token).body
+        }.getOrElse { e ->
+            when (e) {
+                is MalformedJwtException, is SignatureException, is ExpiredJwtException, is UnsupportedJwtException -> {
+                    log.error("Token 검증 실패", e)
+                    throw e
+                }
+
+                else -> throw e
+            }
+        }
+    }
+
     companion object {
         private const val URL: String = "http://localhost:8080"
-        private const val ACCESS_TOKEN_SUBJECT: String = "AccessToken"
-        private const val REFRESH_TOKEN_SUBJECT: String = "RefreshToken"
+        private const val ACCESS_TOKEN_SUBJECT: String = "access-token"
+        private const val REFRESH_TOKEN_SUBJECT: String = "refresh-token"
         private const val EMAIL_KEY: String = "email"
         private const val AUTHORITIES_KEY: String = "role"
     }
@@ -122,8 +151,10 @@ class AccessTokenProvider(
         private val accessTokenSecretKey: String,
 
         @Value("\${jwt.access-token.expire-time}")
-        private val accessTokenExpireTime: Long
-): JwtTokenProvider(accessTokenSecretKey, accessTokenExpireTime)
+        private val accessTokenExpireTime: Long,
+
+        userDetailsService: UserDetailsService
+) : JwtTokenProvider(accessTokenSecretKey, accessTokenExpireTime, userDetailsService)
 
 @Component
 class RefreshTokenProvider(
@@ -131,5 +162,7 @@ class RefreshTokenProvider(
         private val refreshTokenSecretKey: String,
 
         @Value("\${jwt.refresh-token.expire-time}")
-        private val refreshTokenExpireTime: Long
-): JwtTokenProvider(refreshTokenSecretKey, refreshTokenExpireTime)
+        private val refreshTokenExpireTime: Long,
+
+        userDetailsService: UserDetailsService
+) : JwtTokenProvider(refreshTokenSecretKey, refreshTokenExpireTime, userDetailsService)

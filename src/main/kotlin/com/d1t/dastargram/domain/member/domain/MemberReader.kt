@@ -6,4 +6,5 @@ interface MemberReader {
     fun getMemberById(memberId: Long): Member
     fun getMemberByNickname(nickname: String): Member
     fun getMembersByName(name: String): List<Member>
+    fun getMemberByEmail(email: String): Member
 }
