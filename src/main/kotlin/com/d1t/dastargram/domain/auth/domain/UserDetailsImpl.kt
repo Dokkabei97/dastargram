@@ -14,7 +14,6 @@ class UserDetailsImpl(val member: Member) : UserDetails {
 
     override fun getPassword(): String = member.password
 
-
     override fun getUsername(): String = member.email
 
     // 계정 만료 여부
