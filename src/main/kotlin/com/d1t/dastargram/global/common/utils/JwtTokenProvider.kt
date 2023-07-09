@@ -99,12 +99,16 @@ sealed class JwtTokenProvider(
 
     fun getAuthentication(token: String): Authentication {
         val email = getClaims(token)[EMAIL_KEY] as String
-        val userDetailsImpl = userDetailsService.loadUserByUsername(email)
+        val userDetailsImpl = userDetailsService.loadUserByUsername(email).also {
+            println("userDetailsImpl = ${it.username} ${it.password} ${it.authorities}")
+        }
         return UsernamePasswordAuthenticationToken(
                 userDetailsImpl,
                 "",
                 userDetailsImpl.authorities
-        )
+        ).also {
+            println("UsernamePasswordAuthenticationToken = ${it.principal} ${it.credentials} ${it.authorities}")
+        }
     }
 
     fun getClaims(token: String): Claims {

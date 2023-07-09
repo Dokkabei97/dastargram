@@ -1,4 +1,4 @@
-package com.d1t.dastargram.domain.auth.domain
+package com.d1t.dastargram.domain.auth.domain.security
 
 import com.d1t.dastargram.domain.member.domain.MemberReader
 import org.springframework.security.core.userdetails.UserDetails
