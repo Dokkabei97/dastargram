@@ -77,6 +77,9 @@ dependencies {
     runtimeOnly("com.h2database:h2")
     // mysql
     runtimeOnly("com.mysql:mysql-connector-j")
+    // flyway
+    implementation("org.flywaydb:flyway-core")
+    implementation("org.flywaydb:flyway-mysql")
 
     // 스프링 부트 설정 프로세서
     kapt("org.springframework.boot:spring-boot-configuration-processor")
