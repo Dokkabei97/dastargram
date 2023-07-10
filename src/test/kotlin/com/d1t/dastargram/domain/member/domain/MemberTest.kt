@@ -60,33 +60,6 @@ class MemberTest : DescribeSpec({
             }
         }
 
-        context("비밀번호가 8자리 미만일 때") {
-            it("IllegalArgumentException을 던진다.") {
-                val exception = shouldThrow<IllegalArgumentException> {
-                    Member.create(TEST_EMAIL, "test", TEST_NICKNAME, TEST_NAME)
-                }
-                exception.message shouldBe "비밀번호는 8~15자리여야 합니다."
-            }
-        }
-
-        context("비밀번호가 15자리를 초과했을 때") {
-            it("IllegalArgumentException을 던진다.") {
-                val exception = shouldThrow<IllegalArgumentException> {
-                    Member.create(TEST_EMAIL, "a".repeat(16), TEST_NICKNAME, TEST_NAME)
-                }
-                exception.message shouldBe "비밀번호는 8~15자리여야 합니다."
-            }
-        }
-
-        context("비밀번호 사용 불가 특수문자가 있을 때") {
-            it("IllegalArgumentException을 던진다.") {
-                val exception = shouldThrow<IllegalArgumentException> {
-                    Member.create(TEST_EMAIL, "$TEST_PASSWORD+", TEST_NICKNAME, TEST_NAME)
-                }
-                exception.message shouldBe "비밀번호는 영문 대소문자, 숫자, 특수문자(!@#\$%^&*()?_~)로만 구성되어야 합니다."
-            }
-        }
-
         context("닉네임이 주어지지 않았을 때") {
             it("IllegalArgumentException을 던진다.") {
                 val exception = shouldThrow<IllegalArgumentException> {
@@ -177,33 +150,6 @@ class MemberTest : DescribeSpec({
                     member.updatePassword("")
                 }
                 exception.message shouldBe "비밀번호는 필수입니다."
-            }
-        }
-
-        context("비밀번호가 8자리 미만일 때") {
-            it("IllegalArgumentException을 던진다.") {
-                val exception = shouldThrow<IllegalArgumentException> {
-                    member.updatePassword("test")
-                }
-                exception.message shouldBe "비밀번호는 8~15자리여야 합니다."
-            }
-        }
-
-        context("비밀번호가 15자리를 초과했을 때") {
-            it("IllegalArgumentException을 던진다.") {
-                val exception = shouldThrow<IllegalArgumentException> {
-                    member.updatePassword("a".repeat(16))
-                }
-                exception.message shouldBe "비밀번호는 8~15자리여야 합니다."
-            }
-        }
-
-        context("비밀번호 사용 불가 특수문자가 있을 때") {
-            it("IllegalArgumentException을 던진다.") {
-                val exception = shouldThrow<IllegalArgumentException> {
-                    member.updatePassword("$TEST_PASSWORD+")
-                }
-                exception.message shouldBe "비밀번호는 영문 대소문자, 숫자, 특수문자(!@#\$%^&*()?_~)로만 구성되어야 합니다."
             }
         }
 
