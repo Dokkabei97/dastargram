@@ -12,3 +12,5 @@
 - Kotest
 - Docker
 - MySQL
+- Redis
+
