@@ -1,41 +1,49 @@
--- members 테이블에 테스트 데이터 삽입
-INSERT INTO members (email, password, nickname, name, profile_image, follower_count, following_count, post_count, role)
-VALUES
-    ('test1@email.com', SHA2('password1', 256), 'nickname1', 'name1', 'profile_image_url_1', 10, 5, 3, 'ROLE_MEMBER'),
-    ('test2@email.com', SHA2('password2', 256), 'nickname2', 'name2', 'profile_image_url_2', 20, 10, 4, 'ROLE_MEMBER');
+-- 회원 데이터 입력
+INSERT INTO MEMBERS (EMAIL, PASSWORD, NICKNAME, NAME, PROFILE_IMAGE, ROLE)
+VALUES ('test1@example.com', 'password1', 'test_nick1', 'test_name1', 'image_url1', 'ROLE_MEMBER'),
+       ('test2@example.com', 'password2', 'test_nick2', 'test_name2', 'image_url2', 'ROLE_MEMBER'),
+       ('test3@example.com', 'password3', 'test_nick3', 'test_name3', 'image_url3', 'ROLE_MEMBER');
 
--- posts 테이블에 테스트 데이터 삽입
-INSERT INTO posts (member_id, title, content, post_images, like_count)
-VALUES
-    (1, 'title1', 'content1', '["image1_url_1", "image1_url_2"]', 5),
-    (2, 'title2', 'content2', '["image2_url_1"]', 3);
+-- 게시물 데이터 입력
+INSERT INTO POSTS (MEMBER_ID, TITLE, CONTENT, POST_IMAGES)
+VALUES (1, 'test_title1', 'test_content1', '["image1_url", "image2_url"]'),
+       (2, 'test_title2', 'test_content2', '["image3_url", "image4_url"]'),
+       (3, 'test_title3', 'test_content3', '["image5_url", "image6_url"]');
 
--- post_likes 테이블에 테스트 데이터 삽입
-INSERT INTO post_likes (post_id, member_id)
-VALUES
-    (1, 2),
-    (2, 1);
+-- 게시물 좋아요 데이터 입력
+INSERT INTO POST_LIKES (POST_ID, MEMBER_ID)
+VALUES (1, 2),
+       (1, 3),
+       (2, 1),
+       (3, 1),
+       (3, 2);
 
--- post_comments 테이블에 테스트 데이터 삽입
-INSERT INTO post_comments (post_id, member_id, content, like_count)
-VALUES
-    (1, 2, 'comment1', 2),
-    (2, 1, 'comment2', 1);
+-- 게시물 댓글 데이터 입력
+INSERT INTO POST_COMMENTS (POST_ID, MEMBER_ID, CONTENT)
+VALUES (1, 2, 'test_comment1'),
+       (1, 3, 'test_comment2'),
+       (2, 1, 'test_comment3'),
+       (3, 1, 'test_comment4'),
+       (3, 2, 'test_comment5');
 
--- post_comment_likes 테이블에 테스트 데이터 삽입
-INSERT INTO post_comment_likes (post_comment_id, member_id)
-VALUES
-    (1, 1),
-    (2, 2);
+-- 게시물 댓글 좋아요 데이터 입력
+INSERT INTO POST_COMMENT_LIKES (POST_COMMENT_ID, MEMBER_ID)
+VALUES (1, 1),
+       (2, 1),
+       (3, 2),
+       (4, 2),
+       (5, 3);
 
--- bookmark_posts 테이블에 테스트 데이터 삽입
-INSERT INTO bookmark_posts (post_id, member_id)
-VALUES
-    (1, 1),
-    (2, 2);
+-- 북마크 게시물 데이터 입력
+INSERT INTO BOOKMARK_POSTS (POST_ID, MEMBER_ID)
+VALUES (1, 1),
+       (2, 2),
+       (3, 3);
 
--- follows 테이블에 테스트 데이터 삽입
-INSERT INTO follows (follower_member_id, following_member_id)
-VALUES
-    (1, 2),
-    (2, 1);
+-- 팔로우 데이터 입력
+INSERT INTO FOLLOWS (FOLLOWER_MEMBER_ID, FOLLOWING_MEMBER_ID)
+VALUES (1, 2),
+       (1, 3),
+       (2, 1),
+       (3, 1),
+       (3, 2);
