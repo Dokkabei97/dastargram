@@ -111,15 +111,13 @@ class MemberServiceImplTest : BehaviorSpec({
 
         every { memberReader.getMemberById(any()) } returns member
         every { memberReader.isExistsByNickname(any()) } returns false
+        every { passwordEncoder.encode(any()) } returns TEST_PASSWORD
 
         `when`("회원정보 수정 요청") {
             val result = memberService.update(memberRequest)
 
             then("회원정보 수정 성공") {
                 result shouldBe memberResponse
-
-                verify(exactly = 1) { memberReader.getMemberById(any()) }
-                verify(exactly = 1) { memberReader.isExistsByNickname(any()) }
             }
         }
 

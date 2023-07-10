@@ -5,12 +5,15 @@ import com.d1t.dastargram.global.common.security.JwtAccessDeniedHandler
 import com.d1t.dastargram.global.common.security.JwtAuthenticationEntryPoint
 import com.d1t.dastargram.global.common.utils.AccessTokenProvider
 import com.d1t.dastargram.global.common.utils.RefreshTokenProvider
+import org.springframework.boot.autoconfigure.security.servlet.PathRequest
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
+import org.springframework.http.HttpMethod
 import org.springframework.security.authentication.AuthenticationManager
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration
 import org.springframework.security.config.annotation.web.builders.HttpSecurity
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity
+import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer
 import org.springframework.security.config.annotation.web.invoke
 import org.springframework.security.config.http.SessionCreationPolicy
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
@@ -29,6 +32,15 @@ class SecurityConfig(
 
     @Bean
     fun passwordEncoder(): PasswordEncoder = BCryptPasswordEncoder()
+
+    @Bean
+    fun webSecurityCustomizer(): WebSecurityCustomizer {
+        return WebSecurityCustomizer {
+            it
+                    .ignoring()
+                    .requestMatchers(PathRequest.toStaticResources().atCommonLocations())
+        }
+    }
 
     /**
      * Spring Security Kotlin DSL 작성방법
@@ -50,6 +62,8 @@ class SecurityConfig(
                 accessDeniedHandler = jwtAccessDeniedHandler
             }
             authorizeRequests {
+                authorize(HttpMethod.PUT, "/api/v1/members/**", authenticated)
+                authorize("/api/v1/admin/**", hasRole("ADMIN"))
                 authorize(anyRequest, permitAll)
             }
             headers {

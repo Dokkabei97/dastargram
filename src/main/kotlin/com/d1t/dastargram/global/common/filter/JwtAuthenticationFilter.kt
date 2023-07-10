@@ -20,6 +20,8 @@ class JwtAuthenticationFilter(
             response: HttpServletResponse,
             filterChain: FilterChain
     ) {
+        validPath(request, response, filterChain)
+
         val accessToken = resolveToken(request)
 
         runCatching {
@@ -33,6 +35,7 @@ class JwtAuthenticationFilter(
                     SecurityContextHolder.clearContext()
                     response.sendError(403)
                 }
+
                 is UsernameNotFoundException -> {
                     SecurityContextHolder.clearContext()
                     response.sendError(403)
@@ -41,6 +44,16 @@ class JwtAuthenticationFilter(
         }
 
         filterChain.doFilter(request, response)
+    }
+
+    private fun validPath(request: HttpServletRequest, response: HttpServletResponse, filterChain: FilterChain) {
+        when (request.servletPath) {
+            "/api/v1/members" -> {
+                if (request.method == "POST") {
+                    filterChain.doFilter(request, response)
+                }
+            }
+        }
     }
 
     private fun resolveToken(httpServletRequest: HttpServletRequest): String? {
