@@ -14,6 +14,16 @@ Content-Type: application/json
 
 {
   "content": "댓글테스트",
-  "postId": 123123,
-  "memberId": 12123
+  "id": 1,
+  "memberId": 1
+}
+
+###
+
+DELETE http://localhost:8080/api/v1/comments
+Content-Type: application/json
+
+{
+  "id": 1,
+  "memberId": 1
 }
