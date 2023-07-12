@@ -9,7 +9,20 @@ spring:
     username: danawa
     password: danawa-pass
 
+  flyway:
+    enabled: false
+
   jpa:
     hibernate:
       ddl-auto: validate
     show-sql: false
+
+# open-ssl rand -base64 32 로 만든 키 값
+# 토이프로젝트라 그냥 공개 prod 환경 access-token, refresh-token 만료시간 30분, 30일
+jwt:
+  access-token:
+    secret-key: Vf8zQIhYNJc30tXbaP09goQ5NVGMuluq2UE24e7F95M=
+    expire-time: 1800000
+  refresh-token:
+    secret-key: p52Coj75iC1JFj5Daoj+GwGOIsSyroX5Z1rkdn/y2EY=
+    expire-time: 2592000000

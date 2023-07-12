@@ -16,13 +16,17 @@ import org.springframework.web.bind.annotation.RestController
 class MemberController(val memberFacade: MemberFacade) {
 
     @PostMapping
-    fun signUp(@RequestBody @Validated signUpMemberRequest: SignUpMemberRequest): CommonResponse<MemberPublicResponse> {
+    fun signUp(
+            @RequestBody @Validated signUpMemberRequest: SignUpMemberRequest
+    ): CommonResponse<MemberPublicResponse> {
         val member = memberFacade.signUp(signUpMemberRequest)
         return CommonResponse.success(member, "회원가입 성공")
     }
 
-    @PutMapping()
-    fun update(@RequestBody @Validated updateMemberRequest: UpdateMemberRequest): CommonResponse<MemberPublicResponse> {
+    @PutMapping
+    fun update(
+            @RequestBody @Validated updateMemberRequest: UpdateMemberRequest
+    ): CommonResponse<MemberPublicResponse> {
         val member = memberFacade.update(updateMemberRequest)
         return CommonResponse.success(member, "회원정보 수정 성공")
     }
