@@ -9,7 +9,7 @@ import org.springframework.stereotype.Component
 @Component
 class PostReaderImpl(val postRepository: PostRepository) : PostReader {
 
-    override fun findById(memberId: Long): Post = postRepository.findByIdOrNull(memberId)
+    override fun getPostById(memberId: Long): Post = postRepository.findByIdOrNull(memberId)
             ?: throw EntityNotFoundException("존재하지 않는 게시글입니다.")
 
 }

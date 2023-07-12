@@ -9,6 +9,6 @@ import org.springframework.stereotype.Component
 @Component
 class CommentReaderImpl(val commentRepository: CommentRepository) : CommentReader {
 
-    override fun findById(commentId: Long): Comment = commentRepository.findByIdOrNull(commentId)
+    override fun getCommentById(commentId: Long): Comment = commentRepository.findByIdOrNull(commentId)
         ?: throw EntityNotFoundException("존재하지 않는 댓글입니다.")
 }
