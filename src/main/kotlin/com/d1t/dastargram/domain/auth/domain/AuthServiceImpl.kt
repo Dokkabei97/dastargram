@@ -47,28 +47,74 @@ class AuthServiceImpl(
     }
 
     @Transactional
-    override fun logout() {
+    override fun logout(accessTokenHeader: String) {
+        val accessToken = resolveToken(accessTokenHeader)!!
+        val principal = getPrincipal(accessToken)
 
+        redisService.findByKey("$REFRESH_TOKEN_REDIS_KEY:$principal")?.let {
+            redisService.delete("$REFRESH_TOKEN_REDIS_KEY:$principal")
+        }
+    }
+
+    /**
+     *
+     * resolveToken() 함수에서 강력하게 null 체크를 하였기에 다른 함수들에서 !!를 사용해도 된다.
+     */
+    @Transactional
+    override fun reissue(accessTokenHeader: String, refreshToken: String): TokenDto? {
+        val accessToken = resolveToken(accessTokenHeader)!!
+
+        val authentication = accessTokenProvider.getAuthentication(accessToken)
+        val principal = getPrincipal(accessToken)
+        check(validateAccessTokenExpired(accessToken)) { "AccessToken이 만료되지 않았습니다." }
+
+        val redisRefreshToken = redisService.findByKey("$REFRESH_TOKEN_REDIS_KEY:$principal")
+                ?: return null
+
+        if (!refreshTokenProvider.validateToken(refreshToken) && refreshToken != redisRefreshToken) {
+            redisService.delete("$REFRESH_TOKEN_REDIS_KEY:$principal")
+            return null
+        }
+
+        SecurityContextHolder.getContext().authentication = authentication
+        val authorities = getAuthorities(authentication)
+
+        redisService.delete("$REFRESH_TOKEN_REDIS_KEY:$principal")
+        return generateTokens(principal, authorities)
+    }
+
+    private fun resolveToken(accessTokenHeader: String?): String? {
+        if (accessTokenHeader.isNullOrBlank()) {
+            return null
+        } else if (accessTokenHeader.isNotBlank() && accessTokenHeader.startsWith("Bearer ")) {
+            return accessTokenHeader.substring(7)
+        }
+        return null
+    }
+
+    private fun validateAccessTokenExpired(token: String): Boolean {
+        return accessTokenProvider.validateTokenForReissue(token)
     }
 
     private fun generateTokens(email: String, authorities: String): TokenDto {
-        if (redisService.findByKey("$ACCESS_TOKEN_REDIS_KEY:$email") != null) {
-            redisService.delete("$ACCESS_TOKEN_REDIS_KEY:$email")
-        } else if (redisService.findByKey("$REFRESH_TOKEN_REDIS_KEY:$email") != null) {
+        if (redisService.findByKey("$REFRESH_TOKEN_REDIS_KEY:$email") != null) {
             redisService.delete("$REFRESH_TOKEN_REDIS_KEY:$email")
         }
 
         val accessToken = accessTokenProvider.generateToken(email, authorities)
         val refreshToken = refreshTokenProvider.generateToken()
 
-        saveToken(email, accessToken, refreshToken)
+        saveRefreshToken(email, accessToken, refreshToken)
 
         return TokenDto(accessToken, refreshToken)
     }
 
-    private fun saveToken(email: String, accessToken: String, refreshToken: String) {
-        redisService.save("$ACCESS_TOKEN_REDIS_KEY:$email", accessToken)
+    private fun saveRefreshToken(email: String, accessToken: String, refreshToken: String) {
         redisService.save("$REFRESH_TOKEN_REDIS_KEY:$email", refreshToken)
+    }
+
+    private fun getPrincipal(accessToken: String): String {
+        return accessTokenProvider.getAuthentication(accessToken).name
     }
 
 

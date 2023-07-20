@@ -89,7 +89,7 @@ sealed class JwtTokenProvider(
                 is ExpiredJwtException -> true
                 is MalformedJwtException, is SignatureException -> {
                     log.error("AccessToken 검증 실패", e)
-                    false
+                    throw e
                 }
 
                 else -> throw e
@@ -120,9 +120,11 @@ sealed class JwtTokenProvider(
                     log.error("Token 검증 실패", e)
                     throw e
                 }
+
                 is ExpiredJwtException -> {
                     return e.claims
                 }
+
                 else -> throw e
             }
         }
