@@ -16,5 +16,6 @@ class CommonResponse<T>(
         fun <T> success(data: T): CommonResponse<T> = success(data, null)
         fun fail(message: String?, errorCode: String?): CommonResponse<*> = CommonResponse(Result.FAIL, null, message, errorCode)
         fun fail(errorCode: ErrorCode): CommonResponse<*> = CommonResponse(Result.FAIL, null, errorCode.errorMessage, errorCode.name)
+        fun <T> fail(data: T, message: String?, errorCode: String?): CommonResponse<T> = CommonResponse(Result.FAIL, data, message, errorCode)
     }
 }

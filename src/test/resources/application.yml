@@ -2,3 +2,7 @@ server:
   servlet:
     encoding:
       force-response: true
+
+spring:
+  flyway:
+    enabled: false

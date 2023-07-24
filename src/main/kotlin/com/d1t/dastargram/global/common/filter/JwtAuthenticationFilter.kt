@@ -20,7 +20,10 @@ class JwtAuthenticationFilter(
             response: HttpServletResponse,
             filterChain: FilterChain
     ) {
-        validPath(request, response, filterChain)
+        if (validPath(request, response)) {
+            filterChain.doFilter(request, response)
+            return
+        }
 
         val accessToken = resolveToken(request)
 
@@ -46,14 +49,13 @@ class JwtAuthenticationFilter(
         filterChain.doFilter(request, response)
     }
 
-    private fun validPath(request: HttpServletRequest, response: HttpServletResponse, filterChain: FilterChain) {
+    private fun validPath(request: HttpServletRequest, response: HttpServletResponse): Boolean {
         when (request.servletPath) {
             "/api/v1/members" -> {
-                if (request.method == "POST") {
-                    filterChain.doFilter(request, response)
-                }
+                return request.method == "POST"
             }
         }
+        return false
     }
 
     private fun resolveToken(httpServletRequest: HttpServletRequest): String? {
