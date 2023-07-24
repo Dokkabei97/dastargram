@@ -104,12 +104,12 @@ class AuthServiceImpl(
         val accessToken = accessTokenProvider.generateToken(email, authorities)
         val refreshToken = refreshTokenProvider.generateToken()
 
-        saveRefreshToken(email, accessToken, refreshToken)
+        saveRefreshToken(email, refreshToken)
 
         return TokenDto(accessToken, refreshToken)
     }
 
-    private fun saveRefreshToken(email: String, accessToken: String, refreshToken: String) {
+    private fun saveRefreshToken(email: String, refreshToken: String) {
         redisService.save("$REFRESH_TOKEN_REDIS_KEY:$email", refreshToken)
     }
 
