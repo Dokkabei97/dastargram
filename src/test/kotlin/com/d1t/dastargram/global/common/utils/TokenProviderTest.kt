@@ -41,12 +41,12 @@ class TokenProviderTest : BehaviorSpec() {
                     accessTokenProvider.validateToken(accessToken) shouldBe true
                 }
 
-                then("1초가 지나면 만료가 된다") {
-                    Thread.sleep(1000)
+                then("1.8초가 지나면 만료가 된다") {
+                    Thread.sleep(1800)
                     accessTokenProvider.validateToken(accessToken) shouldBe false
                 }
 
-                then("1초가 지나면 재발급용 검증 코드에서는 유효하다") {
+                then("1.8초가 지나면 재발급용 검증 코드에서는 유효하다") {
                     accessTokenProvider.validateTokenForReissue(accessToken) shouldBe true
                 }
             }
@@ -105,7 +105,7 @@ class TokenProviderTest : BehaviorSpec() {
             val accessToken = accessTokenProvider.generateToken(email, authorities)
             val refreshToken = refreshTokenProvider.generateToken()
             `when`("토큰을 재발급을 요청하면") {
-                Thread.sleep(1200)
+                Thread.sleep(1900)
                 val newAccessToken = reissueTokenTest(accessToken, refreshToken)
 
                 then("새로운 accessToken이 발급된다") {
@@ -134,7 +134,7 @@ class TokenProviderTest : BehaviorSpec() {
 
     companion object {
         const val ACCESS_TOKEN_TEST_KEY: String = "ZGy3/59hPszXVia2gzpIwOXcPDWYljEbGsQDMigEuZY="
-        const val ACCESS_TOKEN_TEST_EXPIRE_TIME: Long = 1000L
+        const val ACCESS_TOKEN_TEST_EXPIRE_TIME: Long = 1800L
         const val REFRESH_TOKEN_TEST_KEY: String = "VI7tgck4PV55Tj7O5ZVbWgIN2scM/UqEX9Zvs68TeOw="
         const val REFRESH_TOKEN_TEST_EXPIRE_TIME: Long = 3000L
         const val COUNTERFEIT_TOKEN: String = "eyJhbGCIoDanawa1NiJ9.EYjZDwiiOiIxConnectWavexNjg4MDM4MDI5fQ.Ktc8Y2SnDXktORassslgxsiKFCLPeAMSd45M3JGzlYA"
