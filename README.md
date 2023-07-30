@@ -5,7 +5,7 @@
 - 인스타그램 클론 코딩
 
 ## 기술
--  Kotlin
+- Kotlin
 - Spring Boot
 - Spring Data JPA
 - QueryDsl
@@ -14,3 +14,5 @@
 - MySQL
 - Redis
 
+##  성과 (2023.07.30)
+- 3개의 파트 Kotlin 도입
