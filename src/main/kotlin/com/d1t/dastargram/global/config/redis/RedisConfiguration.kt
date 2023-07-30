@@ -4,21 +4,14 @@ import org.springframework.beans.factory.annotation.Value
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.data.redis.connection.RedisConnectionFactory
+import org.springframework.data.redis.connection.RedisPassword
+import org.springframework.data.redis.connection.RedisStandaloneConfiguration
 import org.springframework.data.redis.connection.lettuce.LettuceConnectionFactory
 import org.springframework.data.redis.core.RedisTemplate
 import org.springframework.data.redis.core.StringRedisTemplate
 import org.springframework.data.redis.repository.configuration.EnableRedisRepositories
 import org.springframework.data.redis.serializer.StringRedisSerializer
 
-/**
- * Spring Data Redis 설정
- * template 함수
- * .opsForValue() : Redis의 String 타입 데이터를 저장하고 조회하는 기능
- * .opsForHash() : Redis의 Hash 타입 데이터를 저장하고 조회하는 기능
- * .opsForList() : Redis의 List 타입 데이터를 저장하고 조회하는 기능
- * .opsForSet() : Redis의 Set 타입 데이터를 저장하고 조회하는 기능
- * .opsForZSet() : Redis의 ZSet 타입 데이터를 저장하고 조회하는 기능
- */
 @Configuration
 @EnableRedisRepositories
 class RedisConfiguration {
@@ -34,9 +27,16 @@ class RedisConfiguration {
     @Value("\${spring.data.redis.port}")
     var port: Int = 6379
 
+    @Value("\${spring.data.redis.password}")
+    var password: String = ""
+
     @Bean
     fun redisConnectionFactory(): RedisConnectionFactory {
-        return LettuceConnectionFactory(host, port)
+        val redisStandaloneConfiguration = RedisStandaloneConfiguration()
+        redisStandaloneConfiguration.hostName = host
+        redisStandaloneConfiguration.port = port
+        redisStandaloneConfiguration.password = RedisPassword.of(password)
+        return LettuceConnectionFactory(redisStandaloneConfiguration)
     }
 
     // RedisTemplate 설정

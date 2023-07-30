@@ -89,7 +89,7 @@ sealed class JwtTokenProvider(
                 is ExpiredJwtException -> true
                 is MalformedJwtException, is SignatureException -> {
                     log.error("AccessToken 검증 실패", e)
-                    false
+                    throw e
                 }
 
                 else -> throw e
@@ -99,16 +99,12 @@ sealed class JwtTokenProvider(
 
     fun getAuthentication(token: String): Authentication {
         val email = getClaims(token)[EMAIL_KEY] as String
-        val userDetailsImpl = userDetailsService.loadUserByUsername(email).also {
-            println("userDetailsImpl = ${it.username} ${it.password} ${it.authorities}")
-        }
+        val userDetailsImpl = userDetailsService.loadUserByUsername(email)
         return UsernamePasswordAuthenticationToken(
                 userDetailsImpl,
                 "",
                 userDetailsImpl.authorities
-        ).also {
-            println("UsernamePasswordAuthenticationToken = ${it.principal} ${it.credentials} ${it.authorities}")
-        }
+        )
     }
 
     fun getClaims(token: String): Claims {
@@ -120,9 +116,11 @@ sealed class JwtTokenProvider(
                     log.error("Token 검증 실패", e)
                     throw e
                 }
+
                 is ExpiredJwtException -> {
                     return e.claims
                 }
+
                 else -> throw e
             }
         }
