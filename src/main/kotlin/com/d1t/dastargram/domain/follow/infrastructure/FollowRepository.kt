@@ -10,4 +10,7 @@ interface FollowRepository: JpaRepository<Follow, Long> {
     @Modifying
     @Query("DELETE FROM Follow f WHERE f.followerMemberId = :followerMemberId AND f.followingMemberId = :followingMemberId")
     fun deleteFollow(followerMemberId: Long, followingMemberId: Long)
+
+    fun findByFollowerMemberId(followerMemberId: Long): List<Follow>?
+    fun findByFollowingMemberId(followingMemberId: Long): List<Follow>?
 }
