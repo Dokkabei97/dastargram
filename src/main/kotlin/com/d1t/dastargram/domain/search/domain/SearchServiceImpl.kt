@@ -1,5 +1,6 @@
 package com.d1t.dastargram.domain.search.domain
 
+import com.d1t.dastargram.domain.member.domain.Member
 import com.d1t.dastargram.domain.member.domain.MemberReader
 import com.d1t.dastargram.domain.member.dto.MemberResponse
 import com.d1t.dastargram.domain.search.dto.SearchMemberResponse
@@ -11,9 +12,12 @@ import org.springframework.stereotype.Service
 class SearchServiceImpl (
     val memberReader: MemberReader
 ) : SearchService {
-    override fun getMemberSearchInfo(keyword: String): List<SearchMemberResponse> {
+    override fun getMemberSearchInfo(keyword: String): List<Member> {
         println("keyword:$keyword")
-        val memberSearchInfo = memberReader.getMemberByNicknameContaining(keyword)
+        val memberSearchInfo = memberReader.getMemberByNicknameContainingOrNameContaining(keyword)
+
+        //함께 팔로우 하는 id 찾기
+
         println(memberSearchInfo)
         return memberSearchInfo
     }

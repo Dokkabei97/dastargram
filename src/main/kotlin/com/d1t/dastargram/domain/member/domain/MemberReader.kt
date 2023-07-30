@@ -9,5 +9,5 @@ interface MemberReader {
     fun getMemberByNickname(nickname: String): Member
     fun getMembersByName(name: String): List<Member>
     fun getMemberByEmail(email: String): Member
-    fun getMemberByNicknameContaining(keyword: String): List<SearchMemberResponse>
+    fun getMemberByNicknameContainingOrNameContaining(keyword: String): List<Member>
 }
