@@ -2,9 +2,11 @@ package com.d1t.dastargram.domain.member.domain
 
 import com.d1t.dastargram.global.common.entity.AbstractEntity
 import jakarta.persistence.*
+import org.springframework.data.annotation.CreatedDate
+import java.sql.Timestamp
 
-@Entity(name = "members")
-@Table(name = "members")
+@Entity(name = "MEMBERS")
+@Table(name = "MEMBERS")
 class Member(
         @Id
         @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -38,7 +40,6 @@ class Member(
         @Enumerated(EnumType.STRING)
         @Column(name = "role")
         var role: Role = Role.MEMBER
-
         ) : AbstractEntity() {
 
     companion object {

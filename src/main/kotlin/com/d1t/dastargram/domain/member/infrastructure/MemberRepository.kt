@@ -14,6 +14,5 @@ interface MemberRepository: JpaRepository<Member, Long> {
     fun findByNameLike(name: String): List<Member>?
     fun findByNicknameLike(nickname: String): List<Member>?
     fun findByEmail(email: String): Member?
-
-    fun getMemberByNicknameContainingOrNameContaining(nickname: String, name: String): List<Member>
+    fun findByNicknameContainingIgnoreCaseOrNameContainingIgnoreCase(nickname: String, name: String): List<Member>
 }

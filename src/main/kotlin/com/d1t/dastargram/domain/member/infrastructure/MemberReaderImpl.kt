@@ -2,7 +2,6 @@ package com.d1t.dastargram.domain.member.infrastructure
 
 import com.d1t.dastargram.domain.member.domain.Member
 import com.d1t.dastargram.domain.member.domain.MemberReader
-import com.d1t.dastargram.domain.search.dto.SearchMemberResponse
 import jakarta.persistence.EntityNotFoundException
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Component
@@ -23,7 +22,7 @@ class MemberReaderImpl(val memberRepository: MemberRepository) : MemberReader {
 
     override fun getMemberByEmail(email: String): Member = memberRepository.findByEmail(email)
             ?: throw EntityNotFoundException("존재하지 않는 회원입니다.")
-    override fun getMemberByNicknameContainingOrNameContaining(keyword: String): List<Member> = memberRepository.getMemberByNicknameContainingOrNameContaining(keyword, keyword)
+    override fun getMemberByKeyword(keyword: String): List<Member> = memberRepository.findByNicknameContainingIgnoreCaseOrNameContainingIgnoreCase(keyword, keyword)
 
 
 }

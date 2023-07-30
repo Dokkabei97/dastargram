@@ -7,5 +7,5 @@ import org.springframework.stereotype.Service
 
 @Service
 class SearchFacade(val searchService: SearchService) {
-    fun getMemberSearchInfo(keyword: String): List<Member> = searchService.getMemberSearchInfo(keyword)
+    fun getMemberByKeyword(keyword: String): List<Member> = searchService.getMemberByKeyword(keyword)
 }

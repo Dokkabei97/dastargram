@@ -16,7 +16,7 @@ class SearchController(val searchFacade: SearchFacade) {
         @PathVariable("keyword") keyword: String
     ): List<Member>{
 
-        return searchFacade.getMemberSearchInfo(keyword)
+        return searchFacade.getMemberByKeyword(keyword)
     }
 
 

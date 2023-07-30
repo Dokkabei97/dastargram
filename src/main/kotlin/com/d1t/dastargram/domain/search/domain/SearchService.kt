@@ -5,6 +5,6 @@ import com.d1t.dastargram.domain.search.dto.SearchMemberResponse
 
 
 interface SearchService {
-    fun getMemberSearchInfo(keyword: String): List<Member>
+    fun getMemberByKeyword(keyword: String): List<Member>
 
 }
