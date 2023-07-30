@@ -11,7 +11,8 @@ import org.springframework.transaction.annotation.Transactional
 @Transactional(readOnly = true)
 class FollowServiceImpl(
         val followStore: FollowStore,
-        val memberReader: MemberReader
+        val memberReader: MemberReader,
+        val followReader: FollowReader
 ) : FollowService {
 
     @Transactional
@@ -38,7 +39,7 @@ class FollowServiceImpl(
     }
 
     override fun getFollowings(memberId: Long): List<Follow> {
-        TODO("Not yet implemented")
+        return followReader.getFollowingsById(memberId)
     }
 
     override fun isFollowing(followerMemberId: Long, followingMemberId: Long): Boolean {

@@ -2,6 +2,7 @@ package com.d1t.dastargram.domain.follow.infrastructure
 
 import com.d1t.dastargram.domain.follow.domain.Follow
 import com.d1t.dastargram.domain.follow.domain.FollowStore
+import com.d1t.dastargram.domain.member.domain.Member
 import org.springframework.stereotype.Component
 
 @Component
