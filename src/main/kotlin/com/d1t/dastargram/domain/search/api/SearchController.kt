@@ -17,4 +17,6 @@ class SearchController(val searchFacade: SearchFacade) {
 
         return searchFacade.getMemberSearchInfo(keyword)
     }
+
+
 }

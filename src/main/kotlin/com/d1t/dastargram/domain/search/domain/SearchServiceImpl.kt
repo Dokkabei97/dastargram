@@ -14,7 +14,7 @@ class SearchServiceImpl (
     override fun getMemberSearchInfo(keyword: String): List<SearchMemberResponse> {
         println("keyword:$keyword")
         val memberSearchInfo = memberReader.getMemberByNicknameContaining(keyword)
-
+        println(memberSearchInfo)
         return memberSearchInfo
     }
 }

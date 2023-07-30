@@ -2,6 +2,7 @@ package com.d1t.dastargram.domain.member.infrastructure
 
 import com.d1t.dastargram.domain.member.domain.Member
 import com.d1t.dastargram.domain.member.domain.MemberReader
+import com.d1t.dastargram.domain.search.dto.SearchMemberResponse
 import jakarta.persistence.EntityNotFoundException
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Component
