@@ -1,8 +1,8 @@
 -- 회원 데이터 입력
 INSERT INTO members (email, password, nickname, name, profile_image, role)
-VALUES ('test1@example.com', 'password1', 'test_nick1', 'test_name1', 'image_url1', 'ROLE_MEMBER'),
-       ('test2@example.com', 'password2', 'test_nick2', 'test_name2', 'image_url2', 'ROLE_MEMBER'),
-       ('test3@example.com', 'password3', 'test_nick3', 'test_name3', 'image_url3', 'ROLE_MEMBER');
+VALUES ('test1@example.com', 'password1', 'test_nick1', 'test_name1', 'image_url1', 'MEMBER'),
+       ('test2@example.com', 'password2', 'test_nick2', 'test_name2', 'image_url2', 'MEMBER'),
+       ('test3@example.com', 'password3', 'test_nick3', 'test_name3', 'image_url3', 'MEMBER');
 
 -- 게시물 데이터 입력+
 INSERT INTO posts (member_id, title, content, post_images)
