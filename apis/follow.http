@@ -1,0 +1,27 @@
+POST http://localhost:8080/api/v1/follows
+Content-Type: application/json
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhY2Nlc3MtdG9rZW4iLCJleHAiOjE2OTA4NDMxNjIsImh0dHA6Ly9sb2NhbGhvc3Q6ODA4MCI6dHJ1ZSwiZW1haWwiOiJob25nQHRlc3QuY29tIiwicm9sZSI6Ik1FTUJFUiJ9.25fxQIghLonNTSAZJdAjWN3s0b9N4wY-YnVaKGyMYPU
+
+{
+  "followerMemberId": 1,
+  "followingMemberId": 2
+}
+
+###
+
+DELETE http://localhost:8080/api/v1/follows
+Content-Type: application/json
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhY2Nlc3MtdG9rZW4iLCJleHAiOjE2OTA4NDMxNjIsImh0dHA6Ly9sb2NhbGhvc3Q6ODA4MCI6dHJ1ZSwiZW1haWwiOiJob25nQHRlc3QuY29tIiwicm9sZSI6Ik1FTUJFUiJ9.25fxQIghLonNTSAZJdAjWN3s0b9N4wY-YnVaKGyMYPU
+
+{
+  "followerMemberId": 1,
+  "followingMemberId": 2
+}
+
+###
+
+GET http://localhost:8080/api/v1/follows/followers?memberId=2
+
+###
+
+GET http://localhost:8080/api/v1/follows/followings?memberId=2

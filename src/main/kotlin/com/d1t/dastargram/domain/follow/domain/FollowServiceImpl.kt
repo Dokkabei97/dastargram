@@ -16,6 +16,8 @@ class FollowServiceImpl(
 
     @Transactional
     override fun follow(request: UpdateFollowRequest): Follow {
+        check(isAlreadyFollow(request)) { "이미 팔로우 중입니다." }
+
         val (followerMember, followingMember) = getMembers(request)
         followerMember.increaseFollowerCount()
         followingMember.increaseFollowingCount()
@@ -56,6 +58,9 @@ class FollowServiceImpl(
     override fun isFollowing(request: UpdateFollowRequest): Boolean {
         TODO("Not yet implemented")
     }
+
+    private fun isAlreadyFollow(request: UpdateFollowRequest) =
+            followReader.isExistByFollowerIdAndFollowingId(request.followerMemberId, request.followingMemberId)
 
     private fun getMember(request: Long) = memberReader.getMemberById(request)
 

@@ -12,4 +12,7 @@ class FollowReaderImpl(val followRepository: FollowRepository) : FollowReader {
 
     override fun getFollowings(memberId: Long): List<Follow> = followRepository.findByFollowingMemberId(memberId)
             ?: emptyList()
+
+    override fun isExistByFollowerIdAndFollowingId(followerMemberId: Long, followingMemberId: Long): Boolean =
+            followRepository.existsByFollowerMemberIdAndFollowingMemberId(followerMemberId, followingMemberId)
 }
