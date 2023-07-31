@@ -4,7 +4,7 @@ Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhY2Nlc3Mtd
 
 {
   "followerMemberId": 1,
-  "followingMemberId": 2
+  "followingMemberId": 3
 }
 
 ###
