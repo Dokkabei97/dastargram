@@ -5,7 +5,7 @@ import com.d1t.dastargram.domain.post.dto.PostRequest.*
 import com.d1t.dastargram.domain.post.dto.PostResponse.*
 
 interface PostService {
-    fun upload(member: Member, content: String?, postImages: List<String>): Post
+    fun upload(uploadPostRequest: UploadPostRequest): PostPublicResponse
 
     fun delete(deletePostRequest: DeletePostRequest)
 

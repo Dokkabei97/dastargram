@@ -8,33 +8,14 @@ import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 
 @Service
-@Transactional(readOnly = true)
 class PostFacade(
-    val postService: PostService,
-    val memberService: MemberService
+    val postService: PostService
 ) {
-    @Transactional
-    fun upload(postUploadRequest: UploadPostRequest): PostPublicResponse {
-        //1. find member
-        val member = memberService.findById(postUploadRequest.memberId)
 
-        //2. post create
-        val post = postService.upload(
-            member,
-            postUploadRequest.content,
-            postUploadRequest.postImages
-        )
-
-        return PostPublicResponse(
-            post.id,
-            post.content,
-            post.likeCount,
-            post.postImages
-        )
-    }
+    fun upload(uploadPostRequest: UploadPostRequest): PostPublicResponse  = postService.upload(uploadPostRequest)
 
     fun delete(deletePostRequest: DeletePostRequest) = postService.delete(deletePostRequest)
 
-    fun update(updatePostRequest: UpdatePostRequest) = postService.update(updatePostRequest)
+    fun update(updatePostRequest: UpdatePostRequest): PostPublicResponse = postService.update(updatePostRequest)
 
 }
