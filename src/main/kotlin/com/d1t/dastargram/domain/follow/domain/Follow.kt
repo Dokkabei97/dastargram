@@ -19,9 +19,10 @@ class Follow(
         var followingMemberId: Long,
 ) : AbstractEntity() {
 
-        companion object {
-                fun create(followerMemberId: Long, followingMemberId: Long): Follow {
-                        return Follow(null, followerMemberId, followingMemberId)
-                }
+    companion object {
+        fun create(followerMemberId: Long, followingMemberId: Long): Follow {
+            require(followerMemberId != followingMemberId) { "팔로우를 하는 사람과 받는 사람이 같을 수 없습니다." }
+            return Follow(null, followerMemberId, followingMemberId)
         }
+    }
 }
