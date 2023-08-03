@@ -46,6 +46,14 @@ class Post(
 
     }
 
+    fun validatePostOwner(memberId: Long) {
+        require(this.member.id == memberId) { "해당 게시물의 소유자가 아닙니다." }
+    }
+
+    fun updateContent(content: String) {
+        this.content = content
+    }
+
     fun increaseLikeCount() {
         this.likeCount++
     }
