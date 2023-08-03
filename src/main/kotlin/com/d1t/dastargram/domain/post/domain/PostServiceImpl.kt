@@ -29,7 +29,7 @@ class PostServiceImpl(
         )
 
         return PostPublicResponse(
-            post.id,
+            post.id!!,
             post.content,
             post.likeCount,
             post.postImages
@@ -59,10 +59,20 @@ class PostServiceImpl(
 
         //3. return response
         return PostPublicResponse(
-            post.id,
+            post.id!!,
             post.content,
             post.likeCount,
             post.postImages
         )
+    }
+
+    override fun getPosts(memberId: Long): List<PostPublicResponse> {
+        //1. check exits member
+        memberReader.getMemberById(memberId)
+
+        //2. find post list
+        val posts: List<Post> = postReader.findByMemberId(memberId)
+
+        return posts.map {it.toPostPublicResponse()}.toList()
     }
 }

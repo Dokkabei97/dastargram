@@ -65,10 +65,6 @@ class MemberServiceImpl(
         )
     }
 
-    override fun findById(memberId: Long): Member {
-        return memberReader.getMemberById(memberId)
-    }
-
     private fun validateExistsEmail(email: String) = require(!memberReader.isExistsByEmail(email)) { "이미 존재하는 이메일입니다." }
 
     private fun validateExistsNickname(nickname: String) = require(!memberReader.isExistsByNickname(nickname)) { "이미 존재하는 닉네임입니다." }

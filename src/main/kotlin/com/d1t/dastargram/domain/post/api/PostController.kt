@@ -36,6 +36,12 @@ class PostController(val postFacade : PostFacade) {
         return CommonResponse.success(post, "게시물 업데이트 성공")
     }
 
-    //TODO 게시물 조회
-    //TODO 게시물 전체 조회
+    @GetMapping("/{memberId}")
+    fun getPosts(
+        @PathVariable memberId: Long
+    )
+    : CommonResponse<List<PostPublicResponse>> {
+        val posts = postFacade.getPosts(memberId)
+        return CommonResponse.success(posts, "회원 게시물 목록 조회 성공")
+    }
 }
