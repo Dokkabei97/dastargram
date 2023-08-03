@@ -11,5 +11,5 @@ sealed class PostResponse(
         override val content: String?,
         override val likeCount: Int = 0,
         override val postImages: List<String>
-    ) : PostResponse(content, likeCount, postImages)
+    ): PostResponse(content, likeCount, postImages)
 }

@@ -9,7 +9,6 @@ import org.springframework.stereotype.Service
 class PostFacade(
     val postService: PostService
 ) {
-
     fun upload(uploadPostRequest: UploadPostRequest): PostPublicResponse  = postService.upload(uploadPostRequest)
 
     fun delete(deletePostRequest: DeletePostRequest) = postService.delete(deletePostRequest)

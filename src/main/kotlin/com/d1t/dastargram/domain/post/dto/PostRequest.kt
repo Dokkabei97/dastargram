@@ -10,7 +10,7 @@ sealed class PostRequest(
         val memberId: Long,
         val content: String?,
         override val postImages: List<String>,
-    ) : PostRequest(postImages)
+    ): PostRequest(postImages)
 
     data class UpdatePostRequest(
         val memberId: Long,

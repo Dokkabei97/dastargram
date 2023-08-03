@@ -12,7 +12,7 @@ class PostServiceImpl(
     val postStore: PostStore,
     val postReader: PostReader,
     val memberReader: MemberReader
-) : PostService {
+): PostService {
 
     @Transactional
     override fun upload(uploadPostRequest: UploadPostRequest): PostPublicResponse {
