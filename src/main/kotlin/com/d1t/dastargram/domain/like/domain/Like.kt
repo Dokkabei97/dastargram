@@ -12,7 +12,7 @@ class Like(
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "like_id")
-    val likeId: Long?,
+    val id: Long?,
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id")
@@ -27,5 +27,6 @@ class Like(
         fun create(member: Member, post: Post): Like {
             return Like(null, member, post)
         }
+        
     }
 }
