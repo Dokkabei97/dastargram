@@ -12,9 +12,10 @@ import org.springframework.transaction.annotation.Transactional
 class PostLikeServiceImpl (
     val memberReader: MemberReader,
     val postReader: PostReader,
-    val postLikeStore: PostLikeStore
+    val postLikeStore: PostLikeStore,
+    val postLikeReader: PostLikeReader
 ) : PostLikeService {
-    override fun insert(insertRequest: PostLikeRequest.InsertRequestPost): PostLikeResponse {
+    override fun insert(insertRequest: PostLikeRequest.InsertRequest): PostLikeResponse {
         val member = memberReader.getMemberById(insertRequest.memberId)
         val post = postReader.findById(insertRequest.postId)
         val postLike = postLikeStore.create(
@@ -27,5 +28,11 @@ class PostLikeServiceImpl (
             postLike.id!!,
             post.id!!
         )
+    }
+
+    @Transactional
+    override fun delete(deleteRequest: PostLikeRequest.DeleteRequest) {
+        val postLike = postLikeReader.getPostLikeById(deleteRequest.postLikeId)
+        postLikeStore.deleteById(deleteRequest.postLikeId)
     }
 }

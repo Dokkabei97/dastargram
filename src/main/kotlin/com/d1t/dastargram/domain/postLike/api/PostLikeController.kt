@@ -16,9 +16,15 @@ class PostLikeController (val postLikeFacade: PostLikeFacade) {
     }
 
     @PostMapping
-    fun createLike(@RequestBody @Validated insertRequest: PostLikeRequest.InsertRequestPost) : CommonResponse<PostLikeResponse> {
+    fun createLike(@RequestBody @Validated insertRequest: PostLikeRequest.InsertRequest) : CommonResponse<PostLikeResponse> {
         val like = postLikeFacade.insert(insertRequest)
         return CommonResponse.success(like, "좋아요 하기 성공")
+    }
+
+    @DeleteMapping
+    fun cancelLike(@RequestBody @Validated deleteRequest: PostLikeRequest.DeleteRequest) : CommonResponse<Nothing?> {
+        val like = postLikeFacade.delete(deleteRequest)
+        return CommonResponse.success(null, "좋아요 취소 성공")
     }
 
 }

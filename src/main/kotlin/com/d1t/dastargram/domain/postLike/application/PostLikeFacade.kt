@@ -6,5 +6,6 @@ import org.springframework.stereotype.Service
 
 @Service
 class PostLikeFacade (val postLikeService: PostLikeService) {
-    fun insert(insertRequest: PostLikeRequest.InsertRequestPost) = postLikeService.insert(insertRequest)
+    fun insert(insertRequest: PostLikeRequest.InsertRequest) = postLikeService.insert(insertRequest)
+    fun delete(deleteRequest: PostLikeRequest.DeleteRequest) = postLikeService.delete(deleteRequest)
 }
