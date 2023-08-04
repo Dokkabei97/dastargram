@@ -1,0 +1,20 @@
+POST http://localhost:8080/api/v1/auth/login
+Content-Type: application/json
+
+{
+  "email": "hong@test.com",
+  "password": "hongtest123!"
+}
+
+###
+
+POST http://localhost:8080/api/v1/auth/logout
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhY2Nlc3MtdG9rZW4iLCJleHAiOjE2OTAxOTg5MjgsImh0dHA6Ly9sb2NhbGhvc3Q6ODA4MCI6dHJ1ZSwiZW1haWwiOiJob25nQHRlc3QuY29tIiwicm9sZSI6Ik1FTUJFUiJ9.ADZtrWfZLVUsSEKg8fjHvX_ibvdvZEfZ172wXc_BxZA
+
+
+###
+
+
+POST http://localhost:8080/api/v1/auth/reissue
+Cookie: refreshToken=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJyZWZyZXNoLXRva2VuIiwiZXhwIjoxNjkwMTk5NjU4fQ.9rqvCq3n2zPBhqwak1Ab3RtJO6rmByMtz363hoo19mQ
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhY2Nlc3MtdG9rZW4iLCJleHAiOjE2OTAxOTk0MTgsImh0dHA6Ly9sb2NhbGhvc3Q6ODA4MCI6dHJ1ZSwiZW1haWwiOiJob25nQHRlc3QuY29tIiwicm9sZSI6Ik1FTUJFUiJ9.EMIwNEtRPzwLYl9lZ3Re-Yr8hoEcXCt_iIUz3kpEqs0

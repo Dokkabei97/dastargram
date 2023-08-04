@@ -11,13 +11,16 @@ class MemberReaderImpl(val memberRepository: MemberRepository) : MemberReader {
 
     override fun isExistsByEmail(email: String): Boolean = memberRepository.existsByEmail(email)
     override fun isExistsByNickname(nickname: String): Boolean = memberRepository.existsByNickname(nickname)
-    override fun findById(memberId: Long): Member = memberRepository.findByIdOrNull(memberId)
+    override fun getMemberById(memberId: Long): Member = memberRepository.findByIdOrNull(memberId)
             ?: throw EntityNotFoundException("존재하지 않는 회원입니다.")
 
-    override fun findByName(name: String): List<Member> = memberRepository.findByName(name)
+    override fun getMemberByNickname(nickname: String): Member = memberRepository.findByNickname(nickname)
             ?: throw EntityNotFoundException("존재하지 않는 회원입니다.")
 
-    override fun findByNickname(nickname: String): Member = memberRepository.findByNickname(nickname)
+    override fun getMembersByName(name: String): List<Member> = memberRepository.findByName(name)
+            ?: throw EntityNotFoundException("존재하지 않는 회원입니다.")
+
+    override fun getMemberByEmail(email: String): Member = memberRepository.findByEmail(email)
             ?: throw EntityNotFoundException("존재하지 않는 회원입니다.")
 
 }

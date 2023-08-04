@@ -1,0 +1,33 @@
+spring:
+  config:
+    activate:
+      on-profile: local
+
+  datasource:
+    driver-class-name: org.h2.Driver
+    url: jdbc:h2:mem:testdb
+    username: sa
+    password:
+
+  flyway:
+    enabled: false
+
+  jpa:
+    hibernate:
+      ddl-auto: create-drop
+    show-sql: true
+
+logging:
+  level:
+    org.hibernate.sql: debug
+    org.hibernate.type: trace
+
+# open-ssl rand -base64 32 로 만든 키 값
+# 토이프로젝트라 그냥 공개 dev 환경 access-token, refresh-token 만료시간 1분, 5분
+jwt:
+  access-token:
+    secret-key: QtvtPoR7jzKvMhNz287qdGMarNvORp+lgSELkuD393I=
+    expire-time: 60000
+  refresh-token:
+    secret-key: AMG12t18NLkQTx3SnNTNSUzUnM4SdJZUGG9GZS4DVQY=
+    expire-time: 300000
