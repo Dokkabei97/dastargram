@@ -1,16 +1,7 @@
 package com.d1t.dastargram.domain.comment.domain
 
-import com.d1t.dastargram.domain.member.domain.Member
 import com.d1t.dastargram.global.common.entity.AbstractEntity
-import jakarta.persistence.Column
-import jakarta.persistence.Entity
-import jakarta.persistence.FetchType
-import jakarta.persistence.GeneratedValue
-import jakarta.persistence.GenerationType
-import jakarta.persistence.Id
-import jakarta.persistence.JoinColumn
-import jakarta.persistence.ManyToOne
-import jakarta.persistence.Table
+import jakarta.persistence.*
 
 /**
  * 댓글 Entity
@@ -29,24 +20,22 @@ class Comment(
     var content: String,
 
     // 댓글 생성한 member
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "member_id")
-    var member: Member,
+    @Column(name = "member_id")
+    var memberId: Long,
 
-//    게시글 정보 - post class 추가 후 추가
-//    @ManyToOne(fetch = FetchType.LAZY)
-//    @Column(name = "post_id")
-//    var post: Post?
+    //게시글 정보
+    @Column(name = "post_id")
+    var postId: Long,
 
-    @Column(name = "comment_like_count", columnDefinition = "int default 0")
+    @Column(name = "comment_like_count")
     var likeCount: Int = 0
 
 ) : AbstractEntity() {
     companion object {
 
-        fun create(content: String, member: Member): Comment {
+        fun create(content: String, memberId: Long, postId: Long): Comment {
             validateComment(content)
-            return Comment(null, content, member)
+            return Comment(null, content, memberId, postId)
         }
 
         private fun validateComment(content: String) {
@@ -59,7 +48,7 @@ class Comment(
         }
     }
 
-    fun updateComment(content: String) {
+    fun updateContent(content: String) {
         this.content = content
     }
 
