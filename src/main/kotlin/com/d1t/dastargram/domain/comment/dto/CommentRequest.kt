@@ -3,9 +3,10 @@ package com.d1t.dastargram.domain.comment.dto
 import jakarta.validation.constraints.NotBlank
 import jakarta.validation.constraints.NotNull
 
-class CommentRequest {
+sealed class CommentRequest (
+) {
 
-    data class insertRequest(
+    data class InsertRequest(
         @field:NotBlank
         val content: String,
         @field:NotNull
@@ -14,7 +15,7 @@ class CommentRequest {
         val memberId: Long,
     )
 
-    data class updateRequest(
+    data class UpdateRequest(
         @field:NotNull
         val id: Long,
         @field:NotBlank
@@ -23,7 +24,7 @@ class CommentRequest {
         val memberId: Long,
     )
 
-    data class deleteRequest(
+    data class DeleteRequest(
         @field:NotNull
         val id: Long,
         @field:NotNull

@@ -23,7 +23,7 @@ class CommentServiceImplTest : BehaviorSpec ({
     val commentService = CommentServiceImpl(memberReader, postReader, commentReader, commentStore)
 
     given("댓글 등록") {
-        val commentRequest = CommentRequest.insertRequest(TEST_CONTENT, TEST_POST_ID, TEST_MEMBER_ID)
+        val commentRequest = CommentRequest.InsertRequest(TEST_CONTENT, TEST_POST_ID, TEST_MEMBER_ID)
         val member = Member.create(
             TestMemberArgument.TEST_EMAIL,
             TestMemberArgument.TEST_PASSWORD,
@@ -32,11 +32,11 @@ class CommentServiceImplTest : BehaviorSpec ({
         )
         val postImages = listOf("https://www.test.com/",  "https://www.test.com/",  "https://www.test.com/")
         val post = Post.create(member, "test", postImages)
-        val comment = Comment.create(TEST_CONTENT, member, post)
-        val commentResponse = CommentResponse(0, TEST_CONTENT)
+        val comment = Comment.create(TEST_CONTENT, TEST_MEMBER_ID, TEST_POST_ID)
+        val commentResponse = CommentResponse.PublicResponse(1, 0, TEST_CONTENT)
 
         every { memberReader.getMemberById(any()) } returns member
-        every { postReader.getPostById(any()) } returns post
+        every { postReader.findById(any()) } returns post
         every { commentStore.create(any()) } returns comment
 
         `when` ("댓글 등록") {

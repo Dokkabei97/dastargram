@@ -1,7 +1,5 @@
 package com.d1t.dastargram.domain.comment.domain
 
-import com.d1t.dastargram.domain.member.domain.Member
-import com.d1t.dastargram.domain.post.domain.Post
 import com.d1t.dastargram.global.common.entity.AbstractEntity
 import jakarta.persistence.*
 
@@ -22,24 +20,22 @@ class Comment(
     var content: String,
 
     // 댓글 생성한 member
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "member_id")
-    var member: Member,
+    @Column(name = "member_id")
+    var memberId: Long,
 
     //게시글 정보
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "post_id")
-    var post: Post,
+    @Column(name = "post_id")
+    var postId: Long,
 
-    @Column(name = "comment_like_count", columnDefinition = "int default 0")
+    @Column(name = "comment_like_count")
     var likeCount: Int = 0
 
 ) : AbstractEntity() {
     companion object {
 
-        fun create(content: String, member: Member, post: Post): Comment {
+        fun create(content: String, memberId: Long, postId: Long): Comment {
             validateComment(content)
-            return Comment(null, content, member, post)
+            return Comment(null, content, memberId, postId)
         }
 
         private fun validateComment(content: String) {

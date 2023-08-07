@@ -17,19 +17,19 @@ import org.springframework.web.bind.annotation.RestController
 class CommentController(val commentFacade: CommentFacade) {
 
     @PostMapping
-    fun create(@RequestBody @Validated insertRequest: CommentRequest.insertRequest): CommonResponse<CommentResponse> {
+    fun create(@RequestBody @Validated insertRequest: CommentRequest.InsertRequest): CommonResponse<CommentResponse> {
         val comment = commentFacade.insert(insertRequest)
         return CommonResponse.success(comment, "댓글 등록 성공")
     }
 
     @PutMapping
-    fun modify(@RequestBody @Validated updateRequest: CommentRequest.updateRequest): CommonResponse<CommentResponse> {
+    fun modify(@RequestBody @Validated updateRequest: CommentRequest.UpdateRequest): CommonResponse<CommentResponse> {
         val comment = commentFacade.update(updateRequest)
         return CommonResponse.success(comment, "댓글 수정 성공")
     }
 
     @DeleteMapping
-    fun remove(@RequestBody @Validated deleteRequest: CommentRequest.deleteRequest): CommonResponse<Nothing?> {
+    fun remove(@RequestBody @Validated deleteRequest: CommentRequest.DeleteRequest): CommonResponse<Unit?> {
         commentFacade.delete(deleteRequest)
         return CommonResponse.success(null, "댓글 삭제 성공")
     }

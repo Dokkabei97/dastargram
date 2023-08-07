@@ -7,8 +7,8 @@ import org.springframework.stereotype.Service
 @Service
 class CommentFacade(val commentService: CommentService) {
 
-    fun insert(insertRequest: CommentRequest.insertRequest) = commentService.insert(insertRequest)
-    fun update(updateRequest: CommentRequest.updateRequest) = commentService.update(updateRequest)
+    fun insert(insertRequest: CommentRequest.InsertRequest) = commentService.insert(insertRequest)
+    fun update(updateRequest: CommentRequest.UpdateRequest) = commentService.update(updateRequest)
 
-    fun delete(deleteRequest: CommentRequest.deleteRequest) = commentService.delete(deleteRequest)
+    fun delete(deleteRequest: CommentRequest.DeleteRequest) = commentService.delete(deleteRequest)
 }

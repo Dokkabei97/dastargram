@@ -9,56 +9,63 @@ import org.springframework.transaction.annotation.Transactional
 
 @Service
 @Transactional(readOnly = true)
-class CommentServiceImpl(val memberReader: MemberReader, val postReader: PostReader, val commentReader: CommentReader, val commentStore: CommentStore) : CommentService {
+class CommentServiceImpl(
+    val memberReader: MemberReader,
+    val postReader: PostReader,
+    val commentReader: CommentReader,
+    val commentStore: CommentStore
+) : CommentService {
 
     @Transactional
-    override fun insert(insertRequest: CommentRequest.insertRequest): CommentResponse {
+    override fun insert(insertRequest: CommentRequest.InsertRequest): CommentResponse.PublicResponse {
         // 회원과 게시글이 존재하는지 확인
-        val member = memberReader.getMemberById(insertRequest.memberId)
-        val post = postReader.getPostById(insertRequest.postId)
+        memberReader.getMemberById(insertRequest.memberId)
+        postReader.findById(insertRequest.postId)
 
         val comment = commentStore.create(
                 Comment.create(
                     insertRequest.content,
-                        member,
-                        post
+                    insertRequest.memberId,
+                    insertRequest.postId
                 )
         )
 
-        return CommentResponse(
+        return CommentResponse.PublicResponse(
+            comment.id!!,
             comment.likeCount,
             comment.content
         )
     }
 
     @Transactional
-    override fun update(updateRequest: CommentRequest.updateRequest): CommentResponse {
+    override fun update(updateRequest: CommentRequest.UpdateRequest): CommentResponse.PublicResponse {
         // 회원, 댓글이 존재하는지 확인
         val member = memberReader.getMemberById(updateRequest.memberId)
         val comment = commentReader.getCommentById(updateRequest.id)
 
-        if (member.id != comment.member.id) {
-            throw IllegalArgumentException("요청 id와 댓글 게시자의 id가 일치하지 않습니다.")
+        check (member.id != comment.memberId) {
+           "요청 id와 댓글 게시자의 id가 일치하지 않습니다."
         }
 
         comment.apply {
             updateContent(updateRequest.content)
         }
 
-        return CommentResponse(
+        return CommentResponse.PublicResponse(
+            comment.id!!,
             comment.likeCount,
             comment.content
         )
     }
 
     @Transactional
-    override fun delete(deleteRequest: CommentRequest.deleteRequest) {
+    override fun delete(deleteRequest: CommentRequest.DeleteRequest) {
         // 회원, 댓글이 존재하는지 확인
         val member = memberReader.getMemberById(deleteRequest.memberId)
         val comment = commentReader.getCommentById(deleteRequest.id)
 
-        if (member.id != comment.member.id) {
-            throw IllegalArgumentException("요청 id와 댓글 게시자의 id가 일치하지 않습니다.")
+        check (member.id != comment.memberId) {
+            "요청 id와 댓글 게시자의 id가 일치하지 않습니다."
         }
 
         commentStore.deleteById(deleteRequest.id)
