@@ -1,8 +1,9 @@
 spring:
   profiles:
-    default: local
+    default: dev
 
   data:
     redis:
       host: localhost
       port: 6379
+      password: danawa-pass

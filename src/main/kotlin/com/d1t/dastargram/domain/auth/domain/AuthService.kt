@@ -5,5 +5,7 @@ import com.d1t.dastargram.domain.auth.dto.TokenDto
 
 interface AuthService {
     fun login(loginAuthRequest: LoginAuthRequest): TokenDto
-    fun logout()
+    fun logout(accessTokenHeader: String)
+
+    fun reissue(accessTokenHeader: String, refreshToken: String): TokenDto?
 }

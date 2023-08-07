@@ -8,8 +8,9 @@ import org.springframework.stereotype.Component
 
 @Component
 class PostReaderImpl(val postRepository: PostRepository) : PostReader {
+    override fun findById(postId: Long): Post = postRepository.findByIdOrNull(postId)
+        ?: throw EntityNotFoundException("존재하지 않는 게시물입니다.")
 
-    override fun getPostById(memberId: Long): Post = postRepository.findByIdOrNull(memberId)
-            ?: throw EntityNotFoundException("존재하지 않는 게시글입니다.")
-
+    override fun findByMemberId(memberId: Long): List<Post> = postRepository.findAllByMemberId(memberId)
+        ?: emptyList()
 }
