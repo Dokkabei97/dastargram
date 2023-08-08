@@ -25,7 +25,7 @@ class BookmarkServiceImpl(
     @Transactional
     override fun insert(insertRequest: BookmarkRequest.InsertRequest): BookmarkResponse {
         val member = memberReader.getMemberById(insertRequest.memberId)
-        val post = postReader.getPostById(insertRequest.postId)
+        val post = postReader.findById(insertRequest.postId)
         val bookmark = bookmarkStore.create(
             Bookmark.create(
                 member,

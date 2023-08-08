@@ -40,7 +40,7 @@ class BookmarkServiceImplTest : BehaviorSpec({
         val bookmarkResponse = BookmarkResponse(0, TEST_POST_ID)
 
         every { memberReader.getMemberById(any()) } returns member
-        every { postReader.getPostById(any()) } returns post
+        every { postReader.findByMemberId(any()) } returns listOf(post)
         every { bookmarkStore.create(any()) } returns bookmark
 
         `when` ("북마크 등록") {
