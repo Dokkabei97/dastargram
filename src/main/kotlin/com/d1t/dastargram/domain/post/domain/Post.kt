@@ -1,5 +1,6 @@
 package com.d1t.dastargram.domain.post.domain
 
+import com.d1t.dastargram.domain.bookmark.domain.Bookmark
 import com.d1t.dastargram.domain.member.domain.Member
 import com.d1t.dastargram.global.common.entity.AbstractEntity
 import com.vladmihalcea.hibernate.type.json.JsonType
@@ -18,7 +19,7 @@ class Post(
         @JoinColumn(name = "member_id")
         var member: Member,
 
-        @Column(name="post_content", columnDefinition = "text")
+        @Column(name="content", columnDefinition = "text")
         var content: String? = null,
 
         @Column(name = "like_count")
