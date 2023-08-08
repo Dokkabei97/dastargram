@@ -9,7 +9,5 @@ class BookmarkFacade(val bookmarkService: BookmarkService) {
 
     fun selectAll(selectRequest: BookmarkRequest.SelectRequest) = bookmarkService.selectAll(selectRequest)
     fun insert(insertRequest: BookmarkRequest.InsertRequest) = bookmarkService.insert(insertRequest)
-   /* fun update(updateRequest: BookmarkRequest.UpdateRequest) = bookmarkService.update(updateRequest)*/
-
     fun delete(deleteRequest: BookmarkRequest.DeleteRequest) = bookmarkService.delete(deleteRequest)
 }

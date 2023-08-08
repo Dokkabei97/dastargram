@@ -18,12 +18,6 @@ class BookmarkController (val bookmarkFacade: BookmarkFacade) {
         return CommonResponse.success(bookmarks, "북마크 전체 조회 성공")
     }
 
- /*   @GetMapping("/{bookmarkId}")
-    fun getBookmark(@PathVariable(name = "bookmarkId") bookmarkId : Long) : ResponseEntity<Bookmark> {
-        val bookmark = bookmarkFacade.getBookmark(bookmarkId)
-        return ResponseEntity.ok(bookmark)
-    }
-*/
     @PostMapping
     fun createBookmark(@RequestBody @Validated insertRequest: BookmarkRequest.InsertRequest) : CommonResponse<BookmarkResponse> {
         val bookmark = bookmarkFacade.insert(insertRequest)
@@ -31,7 +25,7 @@ class BookmarkController (val bookmarkFacade: BookmarkFacade) {
     }
 
     @DeleteMapping
-    fun deleteBookmark(@RequestBody @Validated deleteRequest: BookmarkRequest.DeleteRequest) : CommonResponse<Nothing?> {
+    fun deleteBookmark(@RequestBody @Validated deleteRequest: BookmarkRequest.DeleteRequest) : CommonResponse<Unit?> {
         bookmarkFacade.delete(deleteRequest)
         return CommonResponse.success(null, "북마크 해제 성공")
     }

@@ -20,15 +20,6 @@ sealed class BookmarkRequest (
         memberId = memberId
     )
 
-    data class UpdateRequest(
-        override val postId: Long,
-        override val memberId: Long,
-        val bookmarkId : Long
-    ) : BookmarkRequest(
-        postId = postId,
-        memberId = memberId
-    )
-
     data class DeleteRequest(
         val memberId: Long,
         val bookmarkId : Long

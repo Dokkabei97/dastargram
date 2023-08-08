@@ -8,8 +8,5 @@ interface BookmarkService {
 
     fun selectAll(selectRequest : BookmarkRequest.SelectRequest) : List<BookmarkResponse>
     fun insert(insertRequest: BookmarkRequest.InsertRequest): BookmarkResponse
-
-    /*fun update(updateRequest: BookmarkRequest.UpdateRequest): BookmarkResponse*/
-
     fun delete(deleteRequest: BookmarkRequest.DeleteRequest)
 }
