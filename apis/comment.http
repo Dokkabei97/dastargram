@@ -1,0 +1,29 @@
+POST http://localhost:8080/api/v1/comments
+Content-Type: application/json
+
+{
+  "content": "댓글테스트",
+  "postId": 1,
+  "memberId": 1
+}
+
+###
+
+PUT http://localhost:8080/api/v1/comments
+Content-Type: application/json
+
+{
+  "content": "댓글테스트",
+  "id": 1,
+  "memberId": 1
+}
+
+###
+
+DELETE http://localhost:8080/api/v1/comments
+Content-Type: application/json
+
+{
+  "id": 1,
+  "memberId": 1
+}
