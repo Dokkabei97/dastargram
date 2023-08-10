@@ -5,8 +5,8 @@ import jakarta.persistence.*
 import org.springframework.data.annotation.CreatedDate
 import java.sql.Timestamp
 
-@Entity(name = "MEMBERS")
-@Table(name = "MEMBERS")
+@Entity
+@Table(name = "members")
 class Member(
         @Id
         @GeneratedValue(strategy = GenerationType.IDENTITY)
