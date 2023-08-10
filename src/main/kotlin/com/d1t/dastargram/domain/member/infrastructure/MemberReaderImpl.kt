@@ -22,5 +22,7 @@ class MemberReaderImpl(val memberRepository: MemberRepository) : MemberReader {
 
     override fun getMemberByEmail(email: String): Member = memberRepository.findByEmail(email)
             ?: throw EntityNotFoundException("존재하지 않는 회원입니다.")
+    override fun getMemberByKeyword(keyword: String): List<Member> = memberRepository.findByNicknameContainingIgnoreCaseOrNameContainingIgnoreCase(keyword, keyword)
+
 
 }

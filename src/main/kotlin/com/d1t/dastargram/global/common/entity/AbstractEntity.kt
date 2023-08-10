@@ -1,5 +1,6 @@
 package com.d1t.dastargram.global.common.entity
 
+import jakarta.persistence.Column
 import jakarta.persistence.EntityListeners
 import jakarta.persistence.MappedSuperclass
 import org.springframework.data.annotation.CreatedDate
@@ -12,8 +13,10 @@ import java.time.LocalDateTime
 abstract class AbstractEntity {
 
     @CreatedDate
+    @Column(name = "created_at")
     lateinit var createdAt: LocalDateTime
 
     @LastModifiedDate
+    @Column(name = "updated_at")
     lateinit var updatedAt: LocalDateTime
 }
