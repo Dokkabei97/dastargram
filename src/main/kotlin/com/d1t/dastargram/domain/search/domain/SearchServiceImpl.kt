@@ -25,11 +25,6 @@ class SearchServiceImpl (
         // 나의 팔로잉 찾기
         val followings = followService.getFollowings(accessedId.toLong())
         // 검색 상대의 팔로우 찾기
-        """
-        for(member in memberSearchInfo){
-            
-        }
-        """
         return memberSearchInfo
     }
 }
