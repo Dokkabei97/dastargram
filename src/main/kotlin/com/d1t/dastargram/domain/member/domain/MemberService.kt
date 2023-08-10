@@ -2,7 +2,6 @@ package com.d1t.dastargram.domain.member.domain
 
 import com.d1t.dastargram.domain.member.dto.MemberRequest.SignUpMemberRequest
 import com.d1t.dastargram.domain.member.dto.MemberRequest.UpdateMemberRequest
-import com.d1t.dastargram.domain.member.dto.MemberResponse
 import com.d1t.dastargram.domain.member.dto.MemberResponse.*
 
 interface MemberService {

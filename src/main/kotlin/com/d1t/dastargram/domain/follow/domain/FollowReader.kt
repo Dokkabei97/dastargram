@@ -1,5 +1,7 @@
 package com.d1t.dastargram.domain.follow.domain
 
 interface FollowReader {
-    fun getFollowingsById(accessedId: Long) :List<Follow>
+    fun getFollowers(memberId: Long): List<Follow>
+    fun getFollowings(memberId: Long): List<Follow>
+    fun isExistByFollowerIdAndFollowingId(followerMemberId: Long, followingMemberId: Long): Boolean
 }

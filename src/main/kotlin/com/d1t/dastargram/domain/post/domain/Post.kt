@@ -1,5 +1,6 @@
 package com.d1t.dastargram.domain.post.domain
 
+import com.d1t.dastargram.domain.bookmark.domain.Bookmark
 import com.d1t.dastargram.domain.member.domain.Member
 import com.d1t.dastargram.global.common.entity.AbstractEntity
 import com.vladmihalcea.hibernate.type.json.JsonType
@@ -18,7 +19,7 @@ class Post(
         @JoinColumn(name = "member_id")
         var member: Member,
 
-        @Column(name="post_content", columnDefinition = "text")
+        @Column(name="content", columnDefinition = "text")
         var content: String? = null,
 
         @Column(name = "like_count")
@@ -44,6 +45,14 @@ class Post(
             require(postImages.size in 1..10) { "사진은 1개 이상 10개 이하 등록해야합니다." }
         }
 
+    }
+
+    fun validatePostOwner(memberId: Long) {
+        require(this.member.id == memberId) { "해당 게시물의 소유자가 아닙니다." }
+    }
+
+    fun updateContent(content: String) {
+        this.content = content
     }
 
     fun increaseLikeCount() {
